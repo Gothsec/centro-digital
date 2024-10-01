@@ -4,6 +4,7 @@ import LogoutButton from "./LogoutButton";
 import DeleteButton from "../admin/DeleteButton";
 import { supabase } from "../../lib/supabase";
 import EditSection from "./EditSection";
+import ActiveButton from "./ActiveButton";
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -174,7 +175,7 @@ const Dashboard: React.FC = () => {
         </div>
 
         <div className="flex w-full">
-          <section className="flex flex-1 flex-col gap-2 max-h-screen overflow-y-scroll">
+          <section className="flex flex-1 flex-col gap-3 max-h-[27.5rem] overflow-y-scroll">
             {filteredNegocios.map((negocio) => (
               <article
                 key={negocio.id}
@@ -201,7 +202,7 @@ const Dashboard: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex gap-1.5">
-                  <DeleteButton id={negocio.id} />
+                  {negocio.activo === true ? <DeleteButton id={negocio.id} /> : <ActiveButton id={negocio.id} />}
                   <button onClick={() => toggleEditSection(negocio)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded">
                     Editar
                   </button>
