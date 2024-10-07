@@ -1,50 +1,9 @@
-# React + TypeScript + Vite
+# Centro digital 👋🏻
+<p>¿Alguna vez has sentido la frustración de **buscar un negocio local y no saber por dónde empezar?** Ya sea que necesites un servicio urgente o quieras comprar algo específico, encontrar la opción correcta puede resultar complicado. Las recomendaciones no siempre llegan a tiempo y las búsquedas en línea pueden ser un laberinto.</p>
+<p>En centro digital, creemos que **encontrar un negocio local de calidad no debería ser complicado**. Nuestro compromiso es conectar a la comunidad con las mejores opciones disponibles, asegurando satisfacción y confianza en cada compra. ¡Descubre la forma más fácil de encontrar lo que buscas!</p>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Admin dashboard preview
+![image](https://github.com/user-attachments/assets/46032bfb-e2c8-422c-8fa8-4f6775f8386c)
+---
+![image](https://github.com/user-attachments/assets/cf8058de-a9b4-403a-9f77-ff37786b526b)
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
