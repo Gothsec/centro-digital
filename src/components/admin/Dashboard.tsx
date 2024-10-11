@@ -82,7 +82,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="flex max-h-screen overflow-hidden bg-gray-100">
-      <div className="py-8 px-4 flex-grow bg-white shadow-md rounded-lg" id="main-section">
+      <div className="py-8 px-4 flex-grow bg-white shadow-md rounded-lg h-screen" id="main-section">
         <header className="flex justify-between items-center mb-6">
           <h1 className="font-bold text-2xl md:text-3xl lg:text-4xl text-gray-800">Dashboard</h1>
           <LogoutButton />
@@ -174,8 +174,8 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex w-full">
-          <section className="flex flex-1 flex-col gap-3 max-h-[27.5rem] overflow-y-scroll">
+        <div className="flex w-full h-full">
+          <section className="flex flex-1 flex-col gap-3 max-h-full overflow-y-auto">
             {filteredNegocios.map((negocio) => (
               <article
                 key={negocio.id}
