@@ -1,15 +1,15 @@
-// src/components/BusinessPage.tsx
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 
 const BusinessPage: React.FC = () => {
   const { businessName } = useParams<{ businessName: string }>();
   const [businessData, setBusinessData] = useState<any>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (businessName) {
-      async function fetchBusinessData() {
+    async function fetchBusinessData() {
+      if (businessName) {
         const { data, error } = await supabase
           .from('negocios')
           .select('*')
@@ -17,24 +17,27 @@ const BusinessPage: React.FC = () => {
         if (error) {
           console.error('Error fetching business data:', error);
         } else {
-          setBusinessData(data?.[0]);
+          if (data.length === 0) {
+            navigate('/404'); // Redirige a la página 404 si la ruta es inválida (no se encuentra el negocio)
+          } else {
+            setBusinessData(data[0]);
+          }
         }
       }
-      fetchBusinessData();
     }
-  }, [businessName]);
+    fetchBusinessData();
+  }, [businessName, navigate]);
 
-  if (!businessData) return <p>Loading...</p>;
+  if (!businessData) return null;
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">{businessData.nombre}</h1>
-      <p>Descripción: {businessData.descripcion}</p>
+      <p>{businessData.descripcion}</p>
       <p>WhatsApp: {businessData.whatsapp}</p>
       <p>Facebook: {businessData.facebook}</p>
       <p>Instagram: {businessData.instagram}</p>
       <p>Horario: {businessData.hora_a} - {businessData.hora_c}</p>
-
     </div>
   );
 };
