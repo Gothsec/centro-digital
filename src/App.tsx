@@ -5,6 +5,7 @@ import { AuthProvider, useAuth } from './components/auth/AuthContext';
 import Login from './components/admin/Login';
 import Home from './components/Home';
 import Dashboard from './components/admin/Dashboard';
+import BusinessPage from './components/BusinessPage';
 
 const PrivateRoute: React.FC<{ element: React.ReactNode }> = ({ element }) => {
   const { isAuthenticated } = useAuth();
@@ -19,6 +20,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
+          <Route path="/:businessName" element={<BusinessPage />} />
         </Routes>
       </AuthProvider>
     </Router>
