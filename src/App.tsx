@@ -6,6 +6,7 @@ import Home from './components/Home';
 import Dashboard from './components/admin/Dashboard';
 import BusinessPage from './components/BusinessPage';
 import NotFound from './components/NotFound';
+import RegisterPage from './components/RegisterPage';
 
 const PrivateRoute: React.FC<{ element: React.ReactNode }> = ({ element }) => {
   const { isAuthenticated } = useAuth();
@@ -22,6 +23,7 @@ const App: React.FC = () => {
           <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
           <Route path="/404" element={<NotFound />} />
           <Route path="/:businessName" element={<BusinessPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>
