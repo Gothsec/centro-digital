@@ -20,6 +20,9 @@ const Home: React.FC = () => {
 
   return (
     <div className="container mx-auto p-4">
+      <Link to={`/register`} className="inline-flex items-center text-white font-semibold bg-blue-500 py-2 px-4 rounded-md hover:opacity-80 transition-opacity">
+        Crear negocio
+      </Link>
       <h1 className="text-2xl font-bold mb-4">Negocios</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {negocios.map((negocio) => (
