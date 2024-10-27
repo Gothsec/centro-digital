@@ -26,7 +26,7 @@ const Home: React.FC = () => {
       <h1 className="text-2xl font-bold mb-4">Negocios</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {negocios.map((negocio) => (
-          <Link to={`/${negocio.slag}`} key={negocio.id} className="block p-4 border rounded shadow hover:bg-gray-100">
+          <Link to={`/${negocio.slug}`} key={negocio.id} className="block p-4 border rounded shadow hover:bg-gray-100">
             <h2 className="text-xl font-semibold">{negocio.nombre}</h2>
             <p className="text-gray-600">{negocio.descripcion}</p>
           </Link>

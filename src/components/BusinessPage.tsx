@@ -30,7 +30,7 @@ const BusinessPage: React.FC = () => {
         const { data, error } = await supabase
           .from("negocios")
           .select("*")
-          .eq("slag", businessName);
+          .eq("slug", businessName);
 
         if (error) {
           setError("Error fetching business data");
