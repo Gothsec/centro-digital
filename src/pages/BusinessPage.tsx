@@ -84,64 +84,76 @@ const BusinessPage: React.FC = () => {
       <div className="w-full h-48 bg-gray-600 text-white flex items-center justify-center">
         Imagen del negocio
       </div>
-      <section className="px-8 py-6 flex flex-col">
-        <div className="flex items-center justify-between">
+      <section className="px-8 py-6 flex">
+        <div className="mr-8">
+          <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold mb-4 text-gray-800">
             {businessData.nombre}
           </h1>
           <button
-            onClick={() => setIsModalOpen(true)}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-2 rounded"
-          >
-            <Share />
-          </button>
-        </div>
-        <p className="text-gray-600 mb-3 text-pretty">
-          {businessData.descripcion}
-        </p>
-        <p className={`${horarioClass} mb-4`}>
-          <span className="font-semibold">Horario:</span> {businessData.hora_a}{" "}
-          - {businessData.hora_c}
-        </p>
-        <div className="mb-4 flex gap-3 flex-wrap">
-          {businessData.categorias.map((categoria) => (
-            <span
-              key={categoria}
-              className="inline-block text-blue-600 font-medium border border-current rounded-full px-4 py-1 text-center"
+              onClick={() => setIsModalOpen(true)}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-2 rounded"
             >
-              {categoria}
-            </span>
-          ))}
-        </div>
-        <div className="flex gap-4">
-          <a
-            target="_blank"
-            href={`https://api.whatsapp.com/send?phone=${businessData.whatsapp}&text=Hola! 👋. Vengo de parte de centro-digital.com`}
-            className="inline-flex gap-2 items-center text-white font-semibold bg-[#25D366] py-2 px-4 rounded-md hover:opacity-80 transition-opacity"
-          >
-            <Whatsapp />
-            <span>WhatsApp</span>
-          </a>
-          <a
-            href={`https://m.me/${businessData.facebook}?text=Hola! 👋. Vengo de parte de centro-digital.com`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex gap-2 items-center text-white font-semibold bg-blue-500 py-2 px-4 rounded-md hover:opacity-80 transition-opacity"
-          >
-            <Facebook />
-            <span>Facebook</span>
-          </a>
+              <Share />
+            </button>
+          </div>
+          <p className="text-gray-600 mb-3 text-pretty">
+            {businessData.descripcion}
+          </p>
+          <p className={`${horarioClass} mb-4`}>
+            <span className="font-semibold">Horario:</span>{" "}
+            {businessData.hora_a} - {businessData.hora_c}
+          </p>
+          <div className="mb-4 flex gap-3 flex-wrap">
+            {businessData.categorias.map((categoria) => (
+              <span
+                key={categoria}
+                className="inline-block text-blue-600 font-medium border border-current rounded-full px-4 py-1 text-center"
+              >
+                {categoria}
+              </span>
+            ))}
+          </div>
+          <div className="flex gap-4">
+            <a
+              target="_blank"
+              href={`https://api.whatsapp.com/send?phone=${businessData.whatsapp}&text=Hola! 👋. Vengo de parte de centro-digital.com`}
+              className="inline-flex gap-2 items-center text-white font-semibold bg-[#25D366] py-2 px-4 rounded-md hover:opacity-80 transition-opacity"
+            >
+              <Whatsapp />
+              <span>WhatsApp</span>
+            </a>
+            <a
+              href={`https://m.me/${businessData.facebook}?text=Hola! 👋. Vengo de parte de centro-digital.com`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex gap-2 items-center text-white font-semibold bg-blue-500 py-2 px-4 rounded-md hover:opacity-80 transition-opacity"
+            >
+              <Facebook />
+              <span>Facebook</span>
+            </a>
 
-          <a
-            href={businessData.instagram}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex gap-2 items-center text-white font-semibold bg-[linear-gradient(to_right,_#833ab4,_#fd1d1d,_#fcb045)] py-2 px-4 rounded-md hover:opacity-80 transition-opacity"
-          >
-            <Instagram />
-            <span>Instagram</span>
-          </a>
+            <a
+              href={businessData.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex gap-2 items-center text-white font-semibold bg-[linear-gradient(to_right,_#833ab4,_#fd1d1d,_#fcb045)] py-2 px-4 rounded-md hover:opacity-80 transition-opacity"
+            >
+              <Instagram />
+              <span>Instagram</span>
+            </a>
+          </div>
         </div>
+          <div className="flex-1">
+            <iframe
+              title="Mapa del negocio"
+              src={`https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d29600.045156030865!2d-76.2970097962551!3d3.9053722109240883!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1730147454975!5m2!1sen!2sus`}
+              width="100%"
+              height="350"
+              style={{ border: "2px solid #e5e7eb", borderRadius: "8px" }}
+              loading="lazy"
+            ></iframe>
+          </div>
       </section>
 
       {isModalOpen && <ShareModal onClose={() => setIsModalOpen(false)} />}
