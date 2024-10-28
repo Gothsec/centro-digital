@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { supabase } from "../lib/supabase";
+import { supabase } from "../supabase/supabaseClient";
+import useCategorias from "../hooks/useCategories";
 
 export default function RegisterPage() {
   const [nombre, setNombre] = useState("");
@@ -11,6 +12,8 @@ export default function RegisterPage() {
   const [categorias, setCategoria] = useState<string[]>([]);
   const [descripcion, setDescripcion] = useState("");
   const [error, setError] = useState("");
+
+  const categoriasArray = useCategorias();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -53,6 +56,7 @@ export default function RegisterPage() {
     }
 
     console.log("Formulario enviado", formData);
+    window.location.href = `/${slug}`;
   };
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -63,14 +67,14 @@ export default function RegisterPage() {
   return (
     <div className="w-full min-h-screen flex justify-center items-center bg-gray-100">
       <form className="bg-white shadow-md rounded-lg p-5 m-4 w-full max-w-2xl" onSubmit={handleSubmit}>
-        <h1 className="text-center text-2xl font-bold text-gray-800 mb-4">Crear Negocio</h1>
+        <h1 className="text-center text-2xl font-bold text-gray-800 mb-4">Registrar negocio</h1>
 
         {error && <p className="text-red-500 text-start mb-2">{error}</p>} {/* Mostrar error */}
 
         <div className="grid grid-cols-1 gap-4">
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <label className="block text-gray-700" htmlFor="nombre">Nombre</label>
+              <label className="block text-gray-700 mb-1" htmlFor="nombre">Nombre</label>
               <input
                 className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring focus:ring-blue-300"
                 type="text"
@@ -81,7 +85,7 @@ export default function RegisterPage() {
               />
             </div>
             <div>
-              <label className="block text-gray-700" htmlFor="hora_a">Hora de Apertura</label>
+              <label className="block text-gray-700 mb-1" htmlFor="hora_a">Hora de Apertura</label>
               <input
                 className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring focus:ring-blue-300"
                 type="time"
@@ -92,7 +96,7 @@ export default function RegisterPage() {
               />
             </div>
             <div>
-              <label className="block text-gray-700" htmlFor="hora_c">Hora de Cierre</label>
+              <label className="block text-gray-700 mb-1" htmlFor="hora_c">Hora de Cierre</label>
               <input
                 className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring focus:ring-blue-300"
                 type="time"
@@ -106,7 +110,7 @@ export default function RegisterPage() {
 
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <label className="block text-gray-700" htmlFor="whatsapp">WhatsApp</label>
+              <label className="block text-gray-700 mb-1" htmlFor="whatsapp">WhatsApp</label>
               <input
                 className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring focus:ring-blue-300"
                 type="tel"
@@ -117,7 +121,7 @@ export default function RegisterPage() {
               />
             </div>
             <div>
-              <label className="block text-gray-700" htmlFor="instagram">Instagram</label>
+              <label className="block text-gray-700 mb-1" htmlFor="instagram">Instagram</label>
               <input
                 className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring focus:ring-blue-300"
                 type="url"
@@ -128,7 +132,7 @@ export default function RegisterPage() {
               />
             </div>
             <div>
-              <label className="block text-gray-700" htmlFor="facebook">Facebook</label>
+              <label className="block text-gray-700 mb-1" htmlFor="facebook">Facebook</label>
               <input
                 className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring focus:ring-blue-300"
                 type="url"
@@ -141,22 +145,24 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-gray-700" htmlFor="categorias">Categorías</label>
+            <label className="block text-gray-700 mb-1" htmlFor="categorias">Categorías</label>
             <select
               className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring focus:ring-blue-300"
               id="categorias"
               onChange={handleCategoryChange}
               required
             >
-              <option value="">Selecciona una categoría</option>
-              <option value="categoria-1">Categoría 1</option>
-              <option value="categoria-2">Categoría 2</option>
-              <option value="categoria-3">Categoría 3</option>
+              <option value="" disabled selected>Selecciona una categoría</option>
+              {categoriasArray.map((categoria, index) => (
+                <option key={index} value={categoria}>
+                  {categoria}
+                </option>
+              ))}
             </select>
           </div>
 
           <div>
-            <label className="block text-gray-700" htmlFor="descripcion">Descripción</label>
+            <label className="block text-gray-700 mb-1" htmlFor="descripcion">Descripción</label>
             <textarea
               className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring focus:ring-blue-300 mb-4"
               placeholder="Tu descripción ..."
@@ -164,7 +170,7 @@ export default function RegisterPage() {
               value={descripcion}
               onChange={(e) => setDescripcion(e.target.value)}
               cols={30}
-              rows={5}
+              rows={4}
               required
             ></textarea>
           </div>

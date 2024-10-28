@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '../../lib/supabase';
+import { supabase } from '../../supabase/supabaseClient';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth } from '../../context/auth/AuthContext';
 
 const Login: React.FC = () => {
   const { isAuthenticated } = useAuth();

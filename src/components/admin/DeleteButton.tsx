@@ -1,6 +1,6 @@
 import DeleteModal from "../admin/DeleteModal";
 import { useState } from "react";
-import { supabase } from "../../lib/supabase";
+import { supabase } from "../../supabase/supabaseClient";
 
 export default function DeleteButton(props: any) {
   const [isModalOpen, setModalOpen] = useState(false);

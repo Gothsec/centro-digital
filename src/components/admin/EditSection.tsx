@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { supabase } from "../../lib/supabase";
+import { supabase } from "../../supabase/supabaseClient";
+import useCategorias from '../../hooks/useCategories';
 
 interface Categoria {
   id: number;
@@ -36,29 +37,7 @@ const EditSection: React.FC<EditSectionProps> = ({ negocio, onClose }) => {
 
   const [selectedCategorias, setSelectedCategorias] = useState<string[]>([]);
 
-  const categorias = [
-    "Restaurante",
-    "Mexicano",
-    "Belleza",
-    "Peluqueria",
-    "Ropa",
-    "Fitness",
-    "Gimnasio",
-    "Libreria",
-    "Cultura",
-    "Cafe",
-    "Pasteleria",
-    "Salud",
-    "Dentista",
-    "Educacion",
-    "Veterinaria",
-    "Tecnologia",
-    "Spa",
-    "Turismo",
-    "Panaderia",
-    "Construccion",
-    "Negocios"
-  ];
+  const categorias = useCategorias();
 
   useEffect(() => {
     if (negocio) {

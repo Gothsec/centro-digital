@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
 import DeleteButton from "../admin/DeleteButton";
-import { supabase } from "../../lib/supabase";
+import { supabase } from "../../supabase/supabaseClient";
 import EditSection from "./EditSection";
 import ActiveButton from "./ActiveButton";
+import useCategorias from "../../hooks/useCategories";
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -18,13 +19,7 @@ const Dashboard: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState("todas");
   const [selectedStatus, setSelectedStatus] = useState("activos");
 
-  const categoriasArray = [
-    "Restaurante", "Mexicano", "Belleza", "Peluqueria",
-    "Ropa", "Fitness", "Gimnasio", "Libreria",
-    "Cultura", "Cafe", "Pasteleria", "Salud",
-    "Dentista", "Educacion", "Veterinaria", "Tecnologia",
-    "Spa", "Turismo", "Panaderia", "Construccion", "Negocios"
-  ];
+  const categoriasArray = useCategorias();
 
   useEffect(() => {
     const fetchNegocios = async () => {
