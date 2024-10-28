@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../supabase/supabaseClient";
 import { Whatsapp } from "../../public/icons/Whatsapp";
 import { Facebook } from "../../public/icons/Facebook";
 import { Instagram } from "../../public/icons/Instagram";
 import { LeftArrow } from "../../public/icons/LeftArrow";
+import { Share } from "../../public/icons/Share";
+import ShareModal from "../components/ShareModal";
 
 interface BusinessData {
   nombre: string;
@@ -22,6 +24,7 @@ const BusinessPage: React.FC = () => {
   const [businessData, setBusinessData] = useState<BusinessData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,8 +54,8 @@ const BusinessPage: React.FC = () => {
     if (!businessData) return false;
 
     const now = new Date();
-    const [openHour, openMinute] = businessData.hora_a.split(':').map(Number);
-    const [closeHour, closeMinute] = businessData.hora_c.split(':').map(Number);
+    const [openHour, openMinute] = businessData.hora_a.split(":").map(Number);
+    const [closeHour, closeMinute] = businessData.hora_c.split(":").map(Number);
 
     const openTime = new Date();
     openTime.setHours(openHour, openMinute, 0);
@@ -78,12 +81,24 @@ const BusinessPage: React.FC = () => {
       >
         <LeftArrow />
       </span>
-      <div className="w-full h-48 bg-gray-600 text-white flex items-center justify-center">Imagen del negocio</div>
+      <div className="w-full h-48 bg-gray-600 text-white flex items-center justify-center">
+        Imagen del negocio
+      </div>
       <section className="px-8 py-6 flex flex-col">
-        <h1 className="text-3xl font-bold mb-4 text-gray-800">
-          {businessData.nombre}
-        </h1>
-        <p className="text-gray-600 mb-3 text-pretty">{businessData.descripcion}</p>
+        <div className="flex items-center justify-between">
+          <h1 className="text-3xl font-bold mb-4 text-gray-800">
+            {businessData.nombre}
+          </h1>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-2 rounded"
+          >
+            <Share />
+          </button>
+        </div>
+        <p className="text-gray-600 mb-3 text-pretty">
+          {businessData.descripcion}
+        </p>
         <p className={`${horarioClass} mb-4`}>
           <span className="font-semibold">Horario:</span> {businessData.hora_a}{" "}
           - {businessData.hora_c}
@@ -100,14 +115,15 @@ const BusinessPage: React.FC = () => {
         </div>
         <div className="flex gap-4">
           <a
-            href={`https://wa.me/${businessData.whatsapp}`}
+            target="_blank"
+            href={`https://api.whatsapp.com/send?phone=${businessData.whatsapp}&text=Hola! 👋. Vengo de parte de centro-digital.com`}
             className="inline-flex gap-2 items-center text-white font-semibold bg-[#25D366] py-2 px-4 rounded-md hover:opacity-80 transition-opacity"
           >
             <Whatsapp />
             <span>WhatsApp</span>
           </a>
           <a
-            href={businessData.facebook}
+            href={`https://m.me/${businessData.facebook}?text=Hola! 👋. Vengo de parte de centro-digital.com`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex gap-2 items-center text-white font-semibold bg-blue-500 py-2 px-4 rounded-md hover:opacity-80 transition-opacity"
@@ -115,6 +131,7 @@ const BusinessPage: React.FC = () => {
             <Facebook />
             <span>Facebook</span>
           </a>
+
           <a
             href={businessData.instagram}
             target="_blank"
@@ -126,6 +143,8 @@ const BusinessPage: React.FC = () => {
           </a>
         </div>
       </section>
+
+      {isModalOpen && <ShareModal onClose={() => setIsModalOpen(false)} />}
     </div>
   );
 };
