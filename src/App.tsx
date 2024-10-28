@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './components/auth/AuthContext';
+import { AuthProvider, useAuth } from './context/auth/AuthContext';
 import Login from './components/admin/Login';
-import Home from './components/Home';
+import Home from './pages/Home';
 import Dashboard from './components/admin/Dashboard';
-import BusinessPage from './components/BusinessPage';
-import NotFound from './components/NotFound';
-import RegisterPage from './components/RegisterPage';
+import BusinessPage from './pages/BusinessPage';
+import NotFound from './pages/NotFound';
+import RegisterPage from './pages/RegisterPage';
 
 const PrivateRoute: React.FC<{ element: React.ReactNode }> = ({ element }) => {
   const { isAuthenticated } = useAuth();

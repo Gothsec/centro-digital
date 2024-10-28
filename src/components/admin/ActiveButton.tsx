@@ -1,4 +1,4 @@
-import { supabase } from "../../lib/supabase";
+import { supabase } from "../../supabase/supabaseClient";
 
 export default function ActiveButton(props: any) {
 
