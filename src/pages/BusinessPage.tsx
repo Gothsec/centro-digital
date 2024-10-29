@@ -85,7 +85,7 @@ const BusinessPage: React.FC = () => {
         Imagen del negocio
       </div>
       <section className="px-8 py-6 flex">
-        <div className="mr-8">
+        <div className="mr-8 max-w-[50%]">
           <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold mb-4 text-gray-800">
             {businessData.nombre}
