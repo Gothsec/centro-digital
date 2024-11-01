@@ -7,6 +7,8 @@ import { Instagram } from "../../public/icons/Instagram";
 import { LeftArrow } from "../../public/icons/LeftArrow";
 import { Share } from "../../public/icons/Share";
 import ShareModal from "../components/ShareModal";
+import Skeleton from "react-loading-skeleton";
+import { motion } from "framer-motion";
 
 interface BusinessData {
   nombre: string;
@@ -66,15 +68,40 @@ const BusinessPage: React.FC = () => {
     return now >= openTime && now <= closeTime;
   };
 
-  if (loading) return <div className="text-center py-4">Cargando...</div>;
+  const horarioClass = isOpen() ? "text-green-600" : "text-red-600";
+
+  if (loading) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Skeleton height={350} />
+        <section className="px-8 py-6 flex">
+          <div className="mr-8 max-w-[50%]">
+            <Skeleton height={50} width={200} />
+            <Skeleton count={3} />
+          </div>
+          <div className="flex-1">
+            <Skeleton height={350} />
+          </div>
+        </section>
+      </motion.div>
+    );
+  }
+
   if (error)
     return <div className="text-red-500 text-center py-4">{error}</div>;
   if (!businessData) return null;
 
-  const horarioClass = isOpen() ? "text-green-600" : "text-red-600";
-
   return (
-    <div className="bg-white">
+    <motion.div
+      className="bg-white"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       <span
         className="absolute top-8 left-8 inline-flex items-center text-gray-400 cursor-pointer border-2 p-2 rounded-full"
         onClick={() => navigate("/")}
@@ -87,10 +114,10 @@ const BusinessPage: React.FC = () => {
       <section className="px-8 py-6 flex">
         <div className="mr-8 max-w-[50%]">
           <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold mb-4 text-gray-800">
-            {businessData.nombre}
-          </h1>
-          <button
+            <h1 className="text-3xl font-bold mb-4 text-gray-800">
+              {businessData.nombre}
+            </h1>
+            <button
               onClick={() => setIsModalOpen(true)}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-2 rounded"
             >
@@ -132,7 +159,6 @@ const BusinessPage: React.FC = () => {
               <Facebook />
               <span>Facebook</span>
             </a>
-
             <a
               href={businessData.instagram}
               target="_blank"
@@ -144,20 +170,19 @@ const BusinessPage: React.FC = () => {
             </a>
           </div>
         </div>
-          <div className="flex-1">
-            <iframe
-              title="Mapa del negocio"
-              src={`https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d29600.045156030865!2d-76.2970097962551!3d3.9053722109240883!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1730147454975!5m2!1sen!2sus`}
-              width="100%"
-              height="350"
-              style={{ border: "2px solid #e5e7eb", borderRadius: "8px" }}
-              loading="lazy"
-            ></iframe>
-          </div>
+        <div className="flex-1">
+          <iframe
+            title="Mapa del negocio"
+            src={`https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d29600.045156030865!2d-76.2970097962551!3d3.9053722109240883!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1730147454975!5m2!1sen!2sus`}
+            width="100%"
+            height="350"
+            style={{ border: "2px solid #e5e7eb", borderRadius: "8px" }}
+            loading="lazy"
+          ></iframe>
+        </div>
       </section>
-
       {isModalOpen && <ShareModal onClose={() => setIsModalOpen(false)} />}
-    </div>
+    </motion.div>
   );
 };
 

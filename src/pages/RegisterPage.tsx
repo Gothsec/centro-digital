@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { supabase } from "../supabase/supabaseClient";
 import useCategorias from "../hooks/useCategories";
+import { motion } from "framer-motion";
 
-export default function RegisterPage() {
+const RegisterPage = () => {
   const [nombre, setNombre] = useState("");
   const [hora_a, setApertura] = useState("");
   const [hora_c, setCierre] = useState("");
@@ -65,11 +66,24 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="w-full min-h-screen flex justify-center items-center bg-gray-100">
-      <form className="bg-white shadow-md rounded-lg p-5 m-4 w-full max-w-2xl" onSubmit={handleSubmit}>
+    <motion.div 
+      className="w-full min-h-screen flex justify-center items-center bg-gray-100"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <motion.form 
+        className="bg-white shadow-md rounded-lg p-5 m-4 w-full max-w-2xl"
+        onSubmit={handleSubmit}
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: -50, opacity: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <h1 className="text-center text-2xl font-bold text-gray-800 mb-4">Registrar negocio</h1>
 
-        {error && <p className="text-red-500 text-start mb-2">{error}</p>} {/* Mostrar error */}
+        {error && <motion.p className="text-red-500 text-start mb-2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>{error}</motion.p>} {/* Mostrar error */}
 
         <div className="grid grid-cols-1 gap-4">
           <div className="grid grid-cols-3 gap-4">
@@ -176,10 +190,16 @@ export default function RegisterPage() {
           </div>
         </div>
 
-        <button className="w-full bg-blue-500 text-white font-semibold py-2 rounded-md hover:bg-blue-600 transition duration-200">
+        <motion.button 
+          className="w-full bg-blue-500 text-white font-semibold py-2 rounded-md hover:bg-blue-600 transition duration-200"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
           Crear Negocio
-        </button>
-      </form>
-    </div>
+        </motion.button>
+      </motion.form>
+    </motion.div>
   );
 }
+
+export default RegisterPage;
