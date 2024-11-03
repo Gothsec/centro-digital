@@ -1,6 +1,6 @@
-import { supabase } from '../../supabase/supabaseClient';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/auth/AuthContext';
+import { supabase } from "../../supabase/supabaseClient";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/auth/AuthContext";
 
 const LogoutButton: React.FC = () => {
   const navigate = useNavigate();
@@ -9,13 +9,13 @@ const LogoutButton: React.FC = () => {
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
-      console.error('Error signing out:', error);
+      console.error("Error signing out:", error);
     } else {
-      localStorage.removeItem('sb-access-token');
-      localStorage.removeItem('sb-refresh-token');
+      localStorage.removeItem("sb-access-token");
+      localStorage.removeItem("sb-refresh-token");
 
       await checkAuthentication();
-      navigate('/login');
+      navigate("/login");
     }
   };
 

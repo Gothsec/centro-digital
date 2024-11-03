@@ -19,8 +19,8 @@ export default function DeleteButton(props: any) {
       .update({ activo: false })
       .eq("id", props.id);
 
-      window.location.reload();
-    
+    window.location.reload();
+
     console.log(negocio);
     if (error) {
       console.error("Error deleting negocio:", error);
@@ -37,7 +37,7 @@ export default function DeleteButton(props: any) {
         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
         onClick={handleClick}
       >
-        Delete
+        Eliminar
       </button>
       <DeleteModal
         isOpen={isModalOpen}
