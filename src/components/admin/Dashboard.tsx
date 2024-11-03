@@ -96,7 +96,7 @@ const Dashboard: React.FC = () => {
           <h1 className="font-bold text-2xl md:text-3xl lg:text-4xl text-gray-800">
             Dashboard
           </h1>{" "}
-          <LogoutButton/>{" "}
+          <LogoutButton />{" "}
         </header>{" "}
         <div className="flex justify-between items-start mb-4">
           {" "}

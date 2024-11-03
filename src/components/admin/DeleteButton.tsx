@@ -19,8 +19,8 @@ export default function DeleteButton(props: any) {
       .update({ activo: false })
       .eq("id", props.id);
 
-      window.location.reload();
-    
+    window.location.reload();
+
     console.log(negocio);
     if (error) {
       console.error("Error deleting negocio:", error);
