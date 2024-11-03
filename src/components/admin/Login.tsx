@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../../supabase/supabaseClient';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/auth/AuthContext';
+import { motion } from 'framer-motion';
 
 const Login: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -39,23 +40,43 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <form 
+    <motion.div 
+      className="flex items-center justify-center min-h-screen bg-gray-100"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <motion.form 
         onSubmit={handleSubmit} 
         className="bg-white p-8 rounded shadow-md w-96"
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: -50, opacity: 0 }}
+        transition={{ duration: 0.5 }}
       >
-        <h2 className="text-2xl font-semibold mb-6 text-center">Iniciar sesión</h2>
+        <motion.h2 
+          className="text-2xl font-semibold mb-6 text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
+          Iniciar sesión
+        </motion.h2>
         
         <div className="mb-4">
           <label className="block mb-2 text-sm font-medium text-gray-700">
             Correo electrónico:
           </label>
-          <input 
+          <motion.input 
             type="email" 
             value={email} 
             onChange={(e) => setEmail(e.target.value)} 
             required 
             className="border border-gray-300 rounded-lg w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
           />
         </div>
         
@@ -63,25 +84,33 @@ const Login: React.FC = () => {
           <label className="block mb-2 text-sm font-medium text-gray-700">
             Contraseña:
           </label>
-          <input 
+          <motion.input 
             type="password" 
             value={password} 
             onChange={(e) => setPassword(e.target.value)} 
             required 
             className="border border-gray-300 rounded-lg w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
           />
         </div>
         
-        {error && <p className="text-red-500 mb-4">{error}</p>}
+        {error && <motion.p className="text-red-500 mb-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>{error}</motion.p>}
         
-        <button 
+        <motion.button 
           type="submit" 
           className="w-full bg-indigo-500 text-white rounded-lg py-2 hover:bg-indigo-600 transition duration-200"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
         >
           Iniciar sesión
-        </button>
-      </form>
-    </div>
+        </motion.button>
+      </motion.form>
+    </motion.div>
   );
 };
 
