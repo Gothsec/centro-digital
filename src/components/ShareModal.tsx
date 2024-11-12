@@ -33,7 +33,8 @@ const ShareModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
   return (
     <motion.div
-      className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-70 flex items-center justify-center z-50"
+      className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-70 flex items-center justify-center"
+      style={{ zIndex: 1050 }} // Asegura que este modal esté por encima de cualquier contenido en la página
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
