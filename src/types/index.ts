@@ -1,0 +1,53 @@
+export interface Business {
+  slug: any;
+  id: string;
+  nombre: string;
+  imageUrl: string;
+  horario: string;
+  direccion: string;
+  descripcion: string;
+  categoria: string;
+  ubicacion: {
+    lat: number;
+    lng: number;
+  };
+  redes: {
+    whatsapp?: string;
+    facebook?: string;
+    instagram?: string;
+  };
+  photos: string[];
+}
+
+export interface CarouselImage {
+  id: number;
+  url: string;
+  alt: string;
+}
+
+export interface Category {
+  id: string;
+  name: string;
+  icon: string;
+  slug: string;
+}
+
+export interface BusinessForm {
+  productImages: any;
+  image: any;
+  nombre: string;
+  descripcion: string;
+  whatsapp: string;
+  facebook: string;
+  instagram: string;
+  categoria: string;
+  hora_a: string;
+  hora_c: string;
+  slug: string;
+  departamento: string;
+  ciudad: string;
+  direccion: string;
+  lat: number;
+  lng: number;
+  activo: boolean;
+}

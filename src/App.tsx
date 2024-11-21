@@ -1,34 +1,26 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/auth/AuthContext';
-import Login from './components/admin/Login';
-import Home from './pages/Home';
-import Dashboard from './components/admin/Dashboard';
-import BusinessPage from './pages/BusinessPage';
-import NotFound from './pages/NotFound';
-import RegisterPage from './pages/RegisterPage';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BusinessListingContainer } from './components/container/BusinessListingContainer';
+import { BusinessDetailContainer } from './components/container/BusinessDetailContainer';
+import { RegisterBusinessContainer } from './components/container/RegisterBusinessContainer';
+import { HelpCenterContainer } from './components/container/HelpCenterContainer';
+import { TermsContainer } from './components/container/TermsContainer';
+import { PrivacyContainer } from './components/container/PrivacyContainer';
+import { ReportContainer } from './components/container/ReportContainer';
 
-const PrivateRoute: React.FC<{ element: React.ReactNode }> = ({ element }) => {
-  const { isAuthenticated } = useAuth();
-  return isAuthenticated ? <>{element}</> : <Navigate to="/login" />;
-};
-
-const App: React.FC = () => {
+function App() {
   return (
-    <Router>
-      <AuthProvider>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
-          <Route path="/404" element={<NotFound />} />
-          <Route path="/:businessName" element={<BusinessPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </AuthProvider>
-    </Router>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<BusinessListingContainer />} />
+        <Route path="/business/:id" element={<BusinessDetailContainer />} />
+        <Route path="/register-business" element={<RegisterBusinessContainer />} />
+        <Route path="/help" element={<HelpCenterContainer />} />
+        <Route path="/terms" element={<TermsContainer />} />
+        <Route path="/privacy" element={<PrivacyContainer />} />
+        <Route path="/report" element={<ReportContainer />} />
+      </Routes>
+    </BrowserRouter>
   );
-};
+}
 
 export default App;
