@@ -20,34 +20,36 @@ export const BusinessCard = ({ business, onFavorite, isFavorite }: BusinessCardP
     <div className="group relative bg-white rounded-xl shadow-sm hover:shadow-md transition-all overflow-hidden">
       <Link to={`/business/${business.id}`}>
         <div className="aspect-square relative overflow-hidden">
-          {/* Pasar business y imageUrl al componente BusinessImage */}
+          {/* Aquí definimos un tamaño fijo para la imagen usando el width y height */}
           <BusinessImage business={business} imageUrl={imageUrl} />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
       </Link>
-      
+
+      {/* Botón de favoritos con un tamaño fijo para evitar el salto */}
       <button
         onClick={(e) => {
           e.preventDefault();
           onFavorite();
         }}
         className="absolute top-3 right-3 p-2 rounded-full bg-white/90 hover:bg-white shadow-md transition-all"
+        style={{ width: '36px', height: '36px' }}
       >
         <Heart
           className={`h-5 w-5 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-600'}`}
         />
       </button>
-      
+
       <div className="p-5">
         <Link to={`/business/${business.id}`}>
           <h3 className="font-semibold text-lg mb-2 hover:text-blue-600 transition-colors">
             {business.nombre}
           </h3>
         </Link>
-        
+
         <div className="space-y-2">
           <div className="flex items-center text-sm text-gray-600">
-            {/* Aquí mostramos el icono junto con el nombre de la categoría */}
+            {/* Icono de la categoría */}
             <CategoryIcon className="h-4 w-4 mr-2 flex-shrink-0" />
             <span>{business.categoria}</span>
           </div>

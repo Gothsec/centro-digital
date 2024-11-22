@@ -6,7 +6,7 @@ import { BusinessMap } from '../presentation/BusinessMap';
 import { ShareButtons } from '../presentation/ShareButtons';
 import { PhotoGallery } from '../presentation/PhotoGallery';
 import BusinessImage from '../../data/images';
-import { getCategoryIcon } from '../../utils/categories'
+import { getCategoryIcon } from '../../utils/categories';
 
 // Función para convertir hora en formato de 24 horas a 12 horas con AM/PM
 const formatTo12Hour = (time: string) => {
@@ -85,7 +85,58 @@ export const BusinessDetailContainer = () => {
 
   // Mostrar mensaje de carga o error
   if (isLoading) {
-    return <div>Loading business details...</div>;
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          {/* Header Skeleton */}
+          <div className="flex items-center gap-4 mb-8">
+            <div className="w-10 h-10 bg-gray-300 rounded-full animate-pulse"></div>
+            <div className="w-32 h-6 bg-gray-300 rounded animate-pulse"></div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Left Column Skeleton */}
+            <div className="lg:col-span-2 space-y-8">
+              {/* Image Skeleton */}
+              <div className="aspect-video rounded-xl overflow-hidden bg-gray-300 animate-pulse"></div>
+
+              {/* Business Info Skeleton */}
+              <div className="bg-white rounded-xl p-6 shadow-sm space-y-4">
+                <div className="h-6 bg-gray-300 rounded w-3/4 animate-pulse"></div>
+                <div className="h-6 bg-gray-300 rounded w-1/2 animate-pulse"></div>
+                <div className="h-6 bg-gray-300 rounded w-2/3 animate-pulse"></div>
+                <div className="h-4 bg-gray-300 rounded w-5/6 animate-pulse"></div>
+              </div>
+
+              {/* Photo Gallery Skeleton */}
+              <div className="bg-white rounded-xl p-6 shadow-sm">
+                <div className="h-6 bg-gray-300 rounded w-1/3 animate-pulse mb-4"></div>
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="bg-gray-300 animate-pulse rounded h-32"></div>
+                  <div className="bg-gray-300 animate-pulse rounded h-32"></div>
+                  <div className="bg-gray-300 animate-pulse rounded h-32"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column Skeleton */}
+            <div className="space-y-8">
+              {/* Map Skeleton */}
+              <div className="bg-white rounded-xl p-6 shadow-sm">
+                <div className="h-6 bg-gray-300 rounded w-1/2 animate-pulse mb-4"></div>
+                <div className="bg-gray-300 animate-pulse h-48 rounded"></div>
+              </div>
+
+              {/* Share Skeleton */}
+              <div className="bg-white rounded-xl p-6 shadow-sm">
+                <div className="h-6 bg-gray-300 rounded w-1/3 animate-pulse mb-4"></div>
+                <div className="bg-gray-300 animate-pulse h-12 rounded"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (error) {

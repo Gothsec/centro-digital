@@ -78,7 +78,7 @@ export const Footer = () => {
         </div>
 
         <div className="mt-8 pt-8 border-t text-center text-gray-600">
-          <p>&copy; {new Date().getFullYear()} Business Directory. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Centro Digital. All rights reserved.</p>
         </div>
       </div>
     </footer>

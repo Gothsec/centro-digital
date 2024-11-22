@@ -1,4 +1,5 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
+import { motion } from 'framer-motion'; // Importar framer-motion
 import { ImageCarousel } from '../presentation/ImageCarousel';
 import { CategoryCarousel } from '../presentation/CategoryCarousel';
 import { BusinessCard } from '../presentation/BusinessCard';
@@ -6,88 +7,104 @@ import { Footer } from '../presentation/Footer';
 import { categories } from '../../utils/categories';
 import { useFavorites } from '../../hooks/useFavorites';
 import { getCategoryIcon } from '../../utils/categories';
-import { useBusinesses } from '../../hooks/useBusinesses'; // Asegúrate de que este hook funcione correctamente.
-import { Heart } from 'lucide-react';  // Icono de corazón para el botón
+import { useBusinesses } from '../../hooks/useBusinesses'; 
+import { Heart } from 'lucide-react';
 import { SearchBar } from '../presentation/SearchBar';
 
+// Caché de imágenes
+const imageCache = new Map();
+
+// Cargar imagen con Lazy Loading
+const fetchImage = (url: string) => {
+  return new Promise<HTMLImageElement>((resolve, reject) => {
+    if (imageCache.has(url)) {
+      resolve(imageCache.get(url)!);
+      return;
+    }
+
+    const image = new Image();
+    image.src = url;
+    image.loading = "lazy"; // Asegura que las imágenes se carguen de manera diferida
+
+    image.onload = () => {
+      imageCache.set(url, image);
+      resolve(image);
+    };
+
+    image.onerror = () => {
+      reject(new Error(`No se pudo cargar la imagen: ${url}`));
+    };
+  });
+};
+
 const CAROUSEL_IMAGES = [
-  {
-    id: 1,
-    url: "https://lweekzkloveifncmfsuq.supabase.co/storage/v1/object/public/images/profile-2.jpg",
-    alt: "Shop 1"
-  },
-  {
-    id: 2,
-    url: "https://lweekzkloveifncmfsuq.supabase.co/storage/v1/object/public/images/profile-3.jpg",
-    alt: "Shop 2"
-  },
-  {
-    id: 3,
-    url: "https://lweekzkloveifncmfsuq.supabase.co/storage/v1/object/public/images/profile-1.jpg",
-    alt: "Shop 3"
-  }
+  { id: 1, url: "https://lweekzkloveifncmfsuq.supabase.co/storage/v1/object/public/images/profile-1.jpg", alt: "Shop 1" },
+  { id: 2, url: "https://lweekzkloveifncmfsuq.supabase.co/storage/v1/object/public/images/profile-2.jpg", alt: "Shop 2" },
+  { id: 3, url: "https://lweekzkloveifncmfsuq.supabase.co/storage/v1/object/public/images/profile-3.jpg", alt: "Shop 3" },
 ];
 
 export const BusinessListingContainer = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [showFavorites, setShowFavorites] = useState(false);  // Estado para mostrar solo favoritos
-  const [page, setPage] = useState(1);  // Página actual para la paginación
+  const [showFavorites, setShowFavorites] = useState(false);
+  const [page, setPage] = useState(1);
   const { favorites, toggleFavorite } = useFavorites();
 
-  // Usamos el hook useBusinesses para obtener los negocios
   const { businesses, isLoading, error } = useBusinesses();
 
-  // Memorizar el filtrado de negocios para evitar que se recalculen en cada render
+  // Filtrar negocios de acuerdo al término de búsqueda y categoría seleccionada
   const filteredBusinesses = useMemo(() => {
     return businesses.filter((business) => {
-      const matchesSearch = business.nombre && business.nombre.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesSearch = business.nombre?.toLowerCase().includes(searchTerm.toLowerCase()) || false;
       const matchesCategory = selectedCategory
-        ? business.categoria && business.categoria.toLowerCase() === selectedCategory.toLowerCase()
+        ? business.categoria?.toLowerCase() === selectedCategory.toLowerCase()
         : true;
       return matchesSearch && matchesCategory;
     });
   }, [businesses, searchTerm, selectedCategory]);
 
-  // Filtrar los negocios favoritos si 'showFavorites' es true
+  // Solo mostrar los favoritos si "showFavorites" está activado
   const businessesToShow = useMemo(() => {
-    // Si está activado el filtro de favoritos, solo se muestran los favoritos
     return showFavorites
-      ? filteredBusinesses.filter(business => favorites.has(business.id))  // Solo los favoritos
-      : filteredBusinesses;  // Todos los negocios filtrados según la búsqueda y categoría
+      ? filteredBusinesses.filter(business => favorites.has(business.id))
+      : filteredBusinesses;
   }, [filteredBusinesses, favorites, showFavorites]);
 
-  // Mostrar solo los negocios de la página actual (8 por página)
-  const businessesToDisplay = useMemo(() => {
-    return businessesToShow.slice(0, page * 8);  // Limitamos los negocios mostrados
-  }, [businessesToShow, page]);
+  // Paginar los negocios que se van a mostrar
+  const businessesToDisplay = useMemo(() => businessesToShow.slice(0, page * 8), [businessesToShow, page]);
 
-  // Funciones para el carrusel de imágenes
+  // Pre-cargar las imágenes de los carruseles
+  useEffect(() => {
+    const imageUrls = [...CAROUSEL_IMAGES.map(image => image.url), ...businesses.map(business => business.imageUrl).filter(Boolean)];
+    imageUrls.forEach(url => fetchImage(url).catch(error => console.error(error.message)));
+  }, [businesses]);
+
   const handlePrevious = useCallback(() => {
-    setCurrentImageIndex((prev) =>
-      prev === 0 ? CAROUSEL_IMAGES.length - 1 : prev - 1
-    );
+    setCurrentImageIndex(prev => (prev === 0 ? CAROUSEL_IMAGES.length - 1 : prev - 1));
   }, []);
 
   const handleNext = useCallback(() => {
-    setCurrentImageIndex((prev) =>
-      prev === CAROUSEL_IMAGES.length - 1 ? 0 : prev + 1
-    );
+    setCurrentImageIndex(prev => (prev === CAROUSEL_IMAGES.length - 1 ? 0 : prev + 1));
   }, []);
 
   const handleToggleFavorites = useCallback(() => {
-    setShowFavorites((prev) => !prev);
+    setShowFavorites(prev => !prev);
   }, []);
 
-  const handleLoadMore = () => {
-    setPage((prev) => prev + 1);  // Aumentar la página para cargar más negocios
-  };
+  const handleLoadMore = useCallback(() => {
+    setPage(prev => prev + 1);
+  }, []);
 
   return (
     <>
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Carrusel de imágenes */}
+      <motion.div
+        className="max-w-7xl mx-auto px-4 py-8"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <ImageCarousel
           images={CAROUSEL_IMAGES}
           currentIndex={currentImageIndex}
@@ -96,7 +113,6 @@ export const BusinessListingContainer = () => {
           onDotClick={setCurrentImageIndex}
         />
 
-        {/* Barra de búsqueda */}
         <div className="mx-auto px-4">
           <div className="bg-white rounded-lg shadow-md border p-6 max-w-2xl mx-auto">
             <div className="flex gap-4 items-center">
@@ -118,7 +134,6 @@ export const BusinessListingContainer = () => {
           </div>
         </div>
 
-        {/* Carrusel de categorías */}
         <div className="mt-2">
           <CategoryCarousel
             categories={categories}
@@ -127,7 +142,6 @@ export const BusinessListingContainer = () => {
           />
         </div>
 
-        {/* Mostrar mensaje de carga o los negocios filtrados */}
         {isLoading ? (
           <div className="text-center mt-12">
             <p className="text-gray-500">Cargando negocios...</p>
@@ -144,22 +158,28 @@ export const BusinessListingContainer = () => {
               </div>
             ) : (
               businessesToDisplay.map((business) => {
-                const CategoryIcon = getCategoryIcon(business.categoria);  // Obtener el icono de la categoría
+                const CategoryIcon = getCategoryIcon(business.categoria);
                 return (
-                  <BusinessCard
+                  <motion.div
                     key={business.id}
-                    business={business}
-                    onFavorite={() => toggleFavorite(business.id)}
-                    isFavorite={favorites.has(business.id)}
-                    categoryIcon={CategoryIcon}  // Pasar el icono de la categoría
-                  />
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <BusinessCard
+                      business={business}
+                      onFavorite={() => toggleFavorite(business.id)}
+                      isFavorite={favorites.has(business.id)}
+                      categoryIcon={CategoryIcon}
+                    />
+                  </motion.div>
                 );
               })
             )}
           </div>
         )}
 
-        {/* Botón de "Cargar más" */}
         {businessesToDisplay.length < businessesToShow.length && (
           <div className="text-center mt-6">
             <button
@@ -170,7 +190,7 @@ export const BusinessListingContainer = () => {
             </button>
           </div>
         )}
-      </div>
+      </motion.div>
       <Footer />
     </>
   );

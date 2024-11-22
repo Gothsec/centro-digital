@@ -23,15 +23,40 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
   onBack,
   onFileChange,  // Recibimos la función para manejar el cambio de archivo
 }) => {
-    const departamentos = useDepartments();  // Usamos el hook que trae los departamentos
-    const [ciudadesFiltradas, setCiudadesFiltradas] = useState<string[]>([]);
-  
-    // Al seleccionar un departamento, filtramos las ciudades
-    useEffect(() => {
-      if (formData.departamento) {
-        setCiudadesFiltradas(departamentos[formData.departamento] || []);
-      }
-    }, [formData.departamento, departamentos]);
+  const departamentos = useDepartments();  // Usamos el hook que trae los departamentos
+  const [ciudadesFiltradas, setCiudadesFiltradas] = useState<string[]>([]);
+  const [imageError, setImageError] = useState<string | null>(null);
+
+  // Al seleccionar un departamento, filtramos las ciudades
+  useEffect(() => {
+    if (formData.departamento) {
+      setCiudadesFiltradas(departamentos[formData.departamento] || []);
+    }
+  }, [formData.departamento, departamentos]);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>, index?: number) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validar tipo de archivo (solo jpg)
+    if (!file.type.includes('image/jpeg')) {
+      setImageError('Only .jpg images are allowed.');
+      return;
+    }
+
+    // Validar tamaño (máximo 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      setImageError('The image size must not exceed 2MB.');
+      return;
+    }
+
+    setImageError(null); // Limpiar cualquier error previo
+    onFileChange(e, index); // Llamamos a la función onFileChange original
+  };
+
+  // Comprobamos si hay error de imagen o si se está enviando
+  const isSubmitDisabled = imageError !== null || isSubmitting;
+
   return (
     <div className="max-w-4xl mt-6 mx-auto p-6 bg-gray-50 shadow-lg rounded-lg">
       <button
@@ -219,9 +244,12 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
             type="file"
             name="image"
             accept="image/jpeg"
-            onChange={onFileChange}
+            onChange={handleImageChange} // Usamos la nueva función de manejo de imagen
             className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
           />
+          {imageError && (
+            <p className="text-red-500 text-sm mt-2">{imageError}</p>
+          )}
           {formData.image && (
             <div className="mt-2">
               <img
@@ -242,7 +270,7 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
             <input
               type="file"
               accept="image/jpeg"
-              onChange={(e) => onFileChange(e, index)} 
+              onChange={(e) => handleImageChange(e, index)} // Usamos la misma función para imágenes de productos
               className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
             />
             {formData.productImages[index] && (
@@ -260,8 +288,8 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
         {/* Submit Button */}
         <button
           type="submit"
-          className={`w-full p-2 rounded text-white ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
-          disabled={isSubmitting}
+          className={`w-full p-2 rounded text-white ${isSubmitDisabled ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
+          disabled={isSubmitDisabled}
         >
           {isSubmitting ? 'Submitting...' : 'Register'}
         </button>

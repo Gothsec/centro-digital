@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { CarouselImage } from '../../types';
 
@@ -17,18 +17,30 @@ export const ImageCarousel = ({
   onNext,
   onDotClick,
 }: ImageCarouselProps) => {
-  const [isSliding, setIsSliding] = useState(false); // Estado para controlar el deslizamiento
+  const [isSliding, setIsSliding] = useState(false);
+
+  // Usamos useMemo para evitar re-renderizaciones innecesarias de los puntos
+  const dots = useMemo(() => {
+    return images.map((_, index) => (
+      <button
+        key={index}
+        onClick={() => onDotClick(index)}
+        className={`w-2 h-2 rounded-full transition-all ${
+          index === currentIndex ? 'bg-white w-4' : 'bg-white/60'
+        }`}
+      />
+    ));
+  }, [images, currentIndex, onDotClick]);
 
   useEffect(() => {
     // Cambiar la imagen automáticamente cada 5 segundos
     const intervalId = setInterval(() => {
       setIsSliding(true);  // Iniciar el deslizamiento
       onNext(); // Cambiar a la siguiente imagen
-    }, 5000); // 5 segundos
+    }, 5000);
 
-    // Limpiar el intervalo cuando el componente se desmonte
-    return () => clearInterval(intervalId);
-  }, [currentIndex, onNext]);
+    return () => clearInterval(intervalId); // Limpiar el intervalo al desmontar
+  }, [onNext]); // Solo depende de onNext, no de currentIndex
 
   useEffect(() => {
     // Cuando el cambio de imagen se haya completado, permitir que el deslizamiento se reinicie
@@ -70,15 +82,7 @@ export const ImageCarousel = ({
 
       {/* Puntos del carrusel (dots) */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
-        {images.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => onDotClick(index)}
-            className={`w-2 h-2 rounded-full transition-all ${
-              index === currentIndex ? 'bg-white w-4' : 'bg-white/60'
-            }`}
-          />
-        ))}
+        {dots}
       </div>
     </div>
   );
