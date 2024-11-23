@@ -6,6 +6,7 @@ import { HelpCenterContainer } from './components/container/HelpCenterContainer'
 import { TermsContainer } from './components/container/TermsContainer';
 import { PrivacyContainer } from './components/container/PrivacyContainer';
 import { ReportContainer } from './components/container/ReportContainer';
+import NotFound from './components/presentation/Error404';
 
 function App() {
   return (
@@ -18,6 +19,10 @@ function App() {
         <Route path="/terms" element={<TermsContainer />} />
         <Route path="/privacy" element={<PrivacyContainer />} />
         <Route path="/report" element={<ReportContainer />} />
+
+
+        {/*Ruta para manejar el error 404.*/}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
