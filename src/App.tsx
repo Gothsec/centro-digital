@@ -7,6 +7,7 @@ import { TermsContainer } from './components/container/TermsContainer';
 import { PrivacyContainer } from './components/container/PrivacyContainer';
 import { ReportContainer } from './components/container/ReportContainer';
 import NotFound from './components/presentation/Error404';
+import { DashboardContainer } from './components/container/DashboardContainer';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/terms" element={<TermsContainer />} />
         <Route path="/privacy" element={<PrivacyContainer />} />
         <Route path="/report" element={<ReportContainer />} />
+        <Route path="/dashboard" element={<DashboardContainer />} />
 
 
         {/*Ruta para manejar el error 404.*/}

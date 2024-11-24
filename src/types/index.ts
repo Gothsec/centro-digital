@@ -17,6 +17,7 @@ export interface Business {
     instagram?: string;
   };
   photos: string[];
+  activo: boolean
 }
 
 export interface CarouselImage {
@@ -51,3 +52,9 @@ export interface BusinessForm {
   lng: number;
   activo: boolean;
 }
+
+export type BusinessFilters = {
+  search: string;
+  category: string;
+  status: 'all' | 'active' | 'inactive';
+};

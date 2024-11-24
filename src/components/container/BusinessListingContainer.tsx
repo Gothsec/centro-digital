@@ -2,7 +2,7 @@ import { useState, useMemo, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion'; // Importar framer-motion
 import { ImageCarousel } from '../presentation/ImageCarousel';
 import { CategoryCarousel } from '../presentation/CategoryCarousel';
-import { BusinessCard } from '../presentation/BusinessCard';
+import { BusinessCard } from '../presentation/BusinessCardHome';
 import { Footer } from '../presentation/Footer';
 import { categories } from '../../utils/categories';
 import { useFavorites } from '../../hooks/useFavorites';

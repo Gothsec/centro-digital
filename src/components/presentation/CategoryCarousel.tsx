@@ -66,18 +66,24 @@ export const CategoryCarousel = ({
         })}
       </div>
 
+      {/* Gradientes en los extremos */}
+      <div className="absolute left-0 top-0 h-full w-8 bg-gradient-to-r from-white to-transparent"></div>
+      <div className="absolute right-0 top-0 h-full w-8 bg-gradient-to-l from-white to-transparent"></div>
+
+      {/* Boton izquierdo */}
       <button
         onClick={() => scrollContainer('left')}
         aria-label="Scroll left"
-        className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white"
+        className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 p-2 border rounded-full shadow-lg hover:bg-white"
       >
         <ChevronLeft className="h-5 w-5" />
       </button>
 
+      {/* Boton derecho */}
       <button
         onClick={() => scrollContainer('right')}
         aria-label="Scroll right"
-        className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white"
+        className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 p-2 border rounded-full shadow-lg hover:bg-white"
       >
         <ChevronRight className="h-5 w-5" />
       </button>

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 
-// Definir una interfaz para las props
 interface Business {
   slug: any;
   id: string;
@@ -13,32 +12,30 @@ interface BusinessImageProps {
 }
 
 const BusinessImage = ({ business, imageUrl }: BusinessImageProps) => {
-  const [imageExists, setImageExists] = useState(false);
+  const [imageExists, setImageExists] = useState<boolean>(true); // Asumimos que la imagen existe por defecto
 
   useEffect(() => {
     const checkImage = async () => {
       try {
         const res = await fetch(imageUrl);
-        if (res.ok) {
-          setImageExists(true);
-        } else {
-          setImageExists(false);
+
+        if (!res.ok) {
+          setImageExists(false); // Si la imagen no existe o hay un error de carga
         }
       } catch (error) {
-        setImageExists(false);
+        setImageExists(false); // Si hay un error en la solicitud fetch
       }
     };
 
     checkImage();
   }, [imageUrl]);
 
-  const imageSrc = imageExists
-    ? `https://lweekzkloveifncmfsuq.supabase.co/storage/v1/object/public/images/business-${business.slug}.jpg`
-    : '../../public/default-image.webp';
+  // Imagen predeterminada (debería estar en la carpeta public)
+  const defaultImage = '/default-image.webp';  // Ruta absoluta
 
   return (
     <img
-      src={imageSrc}
+      src={imageExists ? imageUrl : defaultImage}  // Si la imagen existe, mostrarla, si no, mostrar la imagen predeterminada
       alt={business.nombre}
       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
     />
