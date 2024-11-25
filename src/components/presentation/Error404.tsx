@@ -1,5 +1,3 @@
-import React from "react";
-
 const Error404: React.FC = () => {
   return (
     <div className="h-screen bg-gray-50 flex items-center justify-center p-6">

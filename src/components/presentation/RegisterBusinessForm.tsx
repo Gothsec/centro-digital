@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { categories } from '../../utils/categories'; 
 import { ArrowLeft } from 'lucide-react';
 import { BusinessForm } from '../../types';

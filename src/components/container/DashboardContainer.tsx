@@ -8,10 +8,12 @@ import { BusinessModal } from '../presentation/BusinessModal';
 import { useBusinesses } from '../../hooks/useBusinesses';
 import { supabase } from '../../lib/supabase';
 import slugify from 'slugify';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/auth/authContext'; // Importamos el contexto de autenticación
 
 export const DashboardContainer = () => {
   const { businesses, isLoading, error } = useBusinesses();
+  const { checkAuthentication } = useAuth(); // Usamos checkAuthentication
   const [filters, setFilters] = useState<BusinessFilters>({
     search: '',
     category: 'Todas las categorías',
@@ -22,6 +24,16 @@ export const DashboardContainer = () => {
   const [businessToEdit, setBusinessToEdit] = useState<Business | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const navigate = useNavigate();
+
+  // Función para cerrar sesión
+  const handleLogout = async () => {
+    await supabase.auth.signOut(); // Cerrar sesión en Supabase
+    checkAuthentication(); // Actualizamos el estado de autenticación
+    localStorage.removeItem('sb-access-token'); // Limpiamos los tokens de localStorage
+    localStorage.removeItem('sb-refresh-token');
+    navigate('/login'); // Redirigimos a la página de login
+  };
 
   // Memoized filtered businesses
   const filteredBusinesses = useMemo(() => {
@@ -187,7 +199,11 @@ export const DashboardContainer = () => {
             </Link>
             <h1 className="text-2xl font-bold">Dashboard</h1>
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+          {/* Botón de cerrar sesión */}
+          <button
+            onClick={handleLogout} // Llamamos a la función de cierre de sesión
+            className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+          >
             <LogOut className="w-5 h-5" />
             <span>Cerrar sesión</span>
           </button>
@@ -214,20 +230,17 @@ export const DashboardContainer = () => {
           </div>
         </div>
 
-        <BusinessFilterBar
-          filters={filters}
-          onFilterChange={setFilters}
-        />
+        <BusinessFilterBar filters={filters} setFilters={setFilters} />
 
-        <div className={viewMode === 'list' ? 'space-y-6' : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'}>
+        <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 gap-6' : ''}>
           {filteredBusinesses.map((business) => (
-            <BusinessCard
-              key={business.id}
-              business={business}
-              viewMode={viewMode}
-              onDelete={() => handleOpenModal(business)}
-              onEdit={() => handleOpenEditModal(business)}
-            />
+            <div key={business.id}>
+              <BusinessCard
+                business={business}
+                onDelete={handleOpenModal}
+                onEdit={handleOpenEditModal}
+              />
+            </div>
           ))}
         </div>
       </main>
