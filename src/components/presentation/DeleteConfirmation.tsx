@@ -26,10 +26,10 @@ export const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = (
           <X className="w-5 h-5" />
         </button>
 
-        <h2 className="text-xl font-semibold mb-4">¿Estás seguro?</h2>
+        <h2 className="text-xl font-semibold mb-4">Confirmar eliminación</h2>
         <p className="text-gray-600 mb-6">
-          Esta acción no se puede deshacer. Esto eliminará permanentemente el
-          negocio {business.nombre}.
+          ¿Estás seguro que deseas eliminar el negocio <span className="font-semibold">{business.nombre}</span>? 
+          Esta acción no se puede deshacer.
         </p>
 
         <div className="flex justify-end gap-3">

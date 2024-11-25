@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
-import { Business } from '../types'; // Asumiendo que tienes un tipo Business para tus negocios
+import { Business } from '../types';
 
-// Función para convertir la hora a formato 12 horas con AM/PM
 const formatTo12Hour = (time: string) => {
   const [hours, minutes] = time.split(':');
   let hour = parseInt(hours, 10);
@@ -18,50 +17,58 @@ const formatTo12Hour = (time: string) => {
   return `${hour}:${minutes} ${ampm}`;
 };
 
-// Hook personalizado para obtener negocios desde Supabase
 export const useBusinesses = () => {
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Función para obtener los negocios desde Supabase
-  const fetchBusinesses = async () => {
+  const fetchBusinesses = useCallback(async () => {
     try {
       setIsLoading(true);
-      const { data, error } = await supabase.from('negocios').select('*');
+      setError(null);
 
-      if (error) {
-        throw new Error(error.message);
+      const { data, error: supabaseError } = await supabase
+        .from('negocios')
+        .select('*')
+        .order('nombre', { ascending: true });
+
+      if (supabaseError) {
+        throw new Error(supabaseError.message);
       }
 
-      // Formatear el horario de los negocios
-      const businessesWithFormattedHours = data?.map((business: any) => {
-        const formattedHorario = business.hora_a && business.hora_c
+      const formattedBusinesses = data?.map((business: any) => ({
+        ...business,
+        horario: business.hora_a && business.hora_c
           ? `${formatTo12Hour(business.hora_a)} - ${formatTo12Hour(business.hora_c)}`
-          : 'No disponible';
+          : 'No disponible',
+        ubicacion: {
+          lat: business.lat,
+          lng: business.lng
+        },
+        redes: {
+          whatsapp: business.whatsapp,
+          facebook: business.facebook,
+          instagram: business.instagram
+        }
+      }));
 
-        return {
-          ...business,
-          horario: formattedHorario
-        };
-      });
-
-      setBusinesses(businessesWithFormattedHours || []);
+      setBusinesses(formattedBusinesses || []);
     } catch (err) {
-      setError('Hubo un error al obtener los negocios.');
+      setError('Error al cargar los negocios');
       console.error(err);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchBusinesses();
-  }, []); // Solo se ejecuta una vez al montar el componente
+  }, [fetchBusinesses]);
 
   return {
     businesses,
     isLoading,
-    error
+    error,
+    refetch: fetchBusinesses
   };
 };

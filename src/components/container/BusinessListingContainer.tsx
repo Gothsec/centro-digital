@@ -115,13 +115,13 @@ export const BusinessListingContainer = () => {
 
         <div className="mx-auto px-4">
           <div className="bg-white rounded-lg shadow-md border p-6 max-w-2xl mx-auto">
-            <div className="flex gap-4 items-center">
-              <div className="relative flex-1">
+            <div className="flex gap-4 items-center flex-wrap">
+              <div className="relative flex-1 min-w-60">
                 <SearchBar value={searchTerm} onChange={setSearchTerm} />
               </div>
               <button
                 onClick={handleToggleFavorites}
-                className="inline-flex items-center px-4 py-2 border rounded-md shadow-sm text-sm font-medium text-white bg-white/90 hover:bg-white hover:shadow-md transition-all"
+                className="inline-flex items-center px-4 py-2 border rounded-md shadow-sm text-sm font-medium text-white bg-white/90 hover:bg-white hover:shadow-md transition-all mx-auto"
               >
                 <Heart
                   className={`h-5 w-5 ${showFavorites ? 'fill-red-500 text-red-500' : 'text-gray-600'}`}
