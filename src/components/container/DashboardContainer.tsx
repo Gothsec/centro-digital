@@ -1,12 +1,16 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { LogOut, LayoutGrid, List } from 'lucide-react';
 import { Business, BusinessFilters } from '../../types/';
 import { BusinessCard } from '../presentation/BusinessCardDashboard';
 import { BusinessFilterBar } from '../presentation/BusinessFilters';
 import { DeleteConfirmationModal } from '../presentation/DeleteConfirmation';
+import { BusinessModal } from '../presentation/BusinessModal';
 import { useBusinesses } from '../../hooks/useBusinesses';
+import { supabase } from '../../lib/supabase';
+import slugify from 'slugify';
+import { Link } from 'react-router-dom';
 
-export const DashboardContainer: React.FC = () => {
+export const DashboardContainer = () => {
   const { businesses, isLoading, error } = useBusinesses();
   const [filters, setFilters] = useState<BusinessFilters>({
     search: '',
@@ -15,8 +19,11 @@ export const DashboardContainer: React.FC = () => {
   });
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
   const [businessToDelete, setBusinessToDelete] = useState<Business | undefined>();
+  const [businessToEdit, setBusinessToEdit] = useState<Business | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
+  // Memoized filtered businesses
   const filteredBusinesses = useMemo(() => {
     return businesses.filter((business) => {
       const matchesSearch = business.nombre
@@ -34,43 +41,160 @@ export const DashboardContainer: React.FC = () => {
     });
   }, [businesses, filters]);
 
-  const handleDeleteBusiness = () => {
+  // Memoized handlers
+  const handleDeleteBusiness = useCallback(async () => {
     if (businessToDelete) {
-      // Aquí agregarías la lógica para eliminar el negocio
-      console.log(`Eliminando el negocio con id: ${businessToDelete.id}`);
-      setBusinessToDelete(undefined); // Limpiamos el negocio seleccionado
-      setIsModalOpen(false); // Cerramos el modal
-    }
-  };
+      try {
+        const { error } = await supabase
+          .from('negocios')
+          .delete()
+          .eq('id', businessToDelete.id);
 
-  const handleOpenModal = (business: Business) => {
+        if (error) throw error;
+
+        window.location.reload();
+      } catch (error) {
+        console.error('Error deleting business:', error);
+      }
+      setBusinessToDelete(undefined);
+      setIsModalOpen(false);
+    }
+  }, [businessToDelete]);
+
+  const handleEditBusiness = useCallback(async (updatedBusiness: Partial<Business>) => {
+    if (!businessToEdit) return;
+
+    try {
+      const slug = updatedBusiness.nombre 
+        ? slugify(updatedBusiness.nombre.toLowerCase())
+        : businessToEdit.slug;
+
+      let lat = businessToEdit.lat;
+      let lng = businessToEdit.lng;
+
+      if (
+        updatedBusiness.direccion !== businessToEdit.direccion ||
+        updatedBusiness.ciudad !== businessToEdit.ciudad ||
+        updatedBusiness.departamento !== businessToEdit.departamento
+      ) {
+        try {
+          const direccionCompleta = `${updatedBusiness.direccion}, ${updatedBusiness.ciudad}, ${updatedBusiness.departamento}`;
+          const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccionCompleta)}`;
+          
+          const response = await fetch(url);
+          const data = await response.json();
+          
+          if (data.length > 0) {
+            lat = parseFloat(data[0].lat);
+            lng = parseFloat(data[0].lon);
+          }
+        } catch (error) {
+          console.error('Error getting coordinates:', error);
+        }
+      }
+
+      const { error } = await supabase
+        .from('negocios')
+        .update({
+          nombre: updatedBusiness.nombre,
+          descripcion: updatedBusiness.descripcion,
+          whatsapp: updatedBusiness.whatsapp || null,
+          facebook: updatedBusiness.facebook || null,
+          instagram: updatedBusiness.instagram || null,
+          categoria: updatedBusiness.categoria,
+          hora_a: updatedBusiness.hora_a,
+          hora_c: updatedBusiness.hora_c,
+          slug,
+          departamento: updatedBusiness.departamento,
+          ciudad: updatedBusiness.ciudad,
+          direccion: updatedBusiness.direccion,
+          lat,
+          lng,
+          activo: updatedBusiness.activo
+        })
+        .eq('id', businessToEdit.id);
+
+      if (error) throw error;
+
+      window.location.reload();
+    } catch (error: any) {
+      console.error('Error updating business:', error.message);
+    }
+
+    setBusinessToEdit(null);
+    setIsEditModalOpen(false);
+  }, [businessToEdit]);
+
+  const handleOpenModal = useCallback((business: Business) => {
     setBusinessToDelete(business);
     setIsModalOpen(true);
-  };
+  }, []);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setBusinessToDelete(undefined);
     setIsModalOpen(false);
-  };
+  }, []);
+
+  const handleOpenEditModal = useCallback((business: Business) => {
+    setBusinessToEdit(business);
+    setIsEditModalOpen(true);
+  }, []);
+
+  const handleCloseEditModal = useCallback(() => {
+    setBusinessToEdit(null);
+    setIsEditModalOpen(false);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 p-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="animate-pulse space-y-8">
+            <div className="h-8 bg-gray-200 rounded w-1/4"></div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="bg-white p-6 rounded-lg shadow-sm space-y-4">
+                  <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                  <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                  <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-2">Error</h2>
+          <p className="text-gray-600">{error}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <h1 className="text-2xl font-bold">
-              Panel de control
-            </h1>
-            <button className="flex items-center gap-2 text-gray-600 hover:text-red-600 transition-colors">
-              <LogOut className="w-5 h-5" />
-              <span className="font-semibold">Cerrar sesión</span>
-            </button>
+      <header className="border-b bg-white px-6 py-4">
+        <div className="flex items-center justify-between">
+          <div className='flex gap-1 items-center'>
+            <Link to='/'>
+              <img className='size-7' src="../../../public/favicon.svg" alt="Logo de centro digital" />
+            </Link>
+            <h1 className="text-2xl font-bold">Dashboard</h1>
           </div>
+          <button className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+            <LogOut className="w-5 h-5" />
+            <span>Cerrar sesión</span>
+          </button>
         </div>
       </header>
 
-      <main className="py-8 px-4 sm:px-6 lg:px-8">
-        {/* Barra de vista y filtro */}
+      <main className="p-6">
         <div className="flex justify-between items-center mb-6">
           <div className="flex gap-4 items-center">
             <button
@@ -90,38 +214,39 @@ export const DashboardContainer: React.FC = () => {
           </div>
         </div>
 
-        {/* Filtro de negocios */}
         <BusinessFilterBar
           filters={filters}
           onFilterChange={setFilters}
         />
 
-        {/* Contenedor de tarjetas */}
         <div className={viewMode === 'list' ? 'space-y-6' : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'}>
-          {isLoading ? (
-            <div className="text-center text-gray-500">Cargando...</div>
-          ) : error ? (
-            <div className="text-center text-red-500">{error}</div>
-          ) : (
-            filteredBusinesses.map((business) => (
-              <BusinessCard
-                key={business.id}
-                business={business}
-                viewMode={viewMode}
-                onDelete={() => handleOpenModal(business)} // Al hacer clic en eliminar, abre el modal
-              />
-            ))
-          )}
+          {filteredBusinesses.map((business) => (
+            <BusinessCard
+              key={business.id}
+              business={business}
+              viewMode={viewMode}
+              onDelete={() => handleOpenModal(business)}
+              onEdit={() => handleOpenEditModal(business)}
+            />
+          ))}
         </div>
       </main>
 
-      {/* Modal de confirmación */}
       <DeleteConfirmationModal
-        business={businessToDelete!} // Usamos el negocio a eliminar
+        business={businessToDelete!}
         isOpen={isModalOpen}
-        onClose={handleCloseModal} // Llama a la función de cierre
-        onConfirm={handleDeleteBusiness} // Llama a la función de confirmación
+        onClose={handleCloseModal}
+        onConfirm={handleDeleteBusiness}
       />
+
+      {businessToEdit && (
+        <BusinessModal
+          business={businessToEdit}
+          isOpen={isEditModalOpen}
+          onClose={handleCloseEditModal}
+          onSave={handleEditBusiness}
+        />
+      )}
     </div>
   );
 };

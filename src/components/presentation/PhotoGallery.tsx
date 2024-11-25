@@ -37,7 +37,7 @@ export const PhotoGallery = ({ photos, businessName }: PhotoGalleryProps) => {
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
       {photos.map((photo, index) => {
-        const photoSrc = imageExists.get(photo) ? photo : '/default-image.webp';
+        const photoSrc = imageExists.get(photo) ? photo : '/default-image.png';
         return (
           <div key={photo} className="relative aspect-square overflow-hidden rounded-lg">
             <img

@@ -153,7 +153,7 @@ export const BusinessDetailContainer = () => {
 
   const images = [`https://lweekzkloveifncmfsuq.supabase.co/storage/v1/object/public/images/business-${business.slug}-1.jpg`, `https://lweekzkloveifncmfsuq.supabase.co/storage/v1/object/public/images/business-${business.slug}-2.jpg`, `https://lweekzkloveifncmfsuq.supabase.co/storage/v1/object/public/images/business-${business.slug}-3.jpg`]
 
-  const defaultImages = ['../../../public/default-image.webp', '../../../public/default-image.webp', '../../../public/default-image.webp']
+  const defaultImages = ['../../../public/default-image.png', '../../../public/default-image.png', '../../../public/default-image.png']
 
   return (
     <div className="min-h-screen bg-gray-50">
