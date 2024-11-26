@@ -1,4 +1,4 @@
-import { Clock, MapPin, Heart } from 'lucide-react';
+import { Clock, MapPin, Heart, Home } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Business } from '../../types';
 import { getCategoryIcon } from '../../utils/categories';  // Asegúrate de importar esta función
@@ -58,8 +58,12 @@ export const BusinessCard = ({ business, onFavorite, isFavorite }: BusinessCardP
             <span>{business.horario}</span>
           </div>
           <div className="flex items-center text-sm text-gray-600">
-            <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
+            <Home className="h-4 w-4 mr-2 flex-shrink-0" />
             <span className="line-clamp-1">{business.direccion}</span>
+          </div>
+          <div className="flex items-center text-sm text-gray-600">
+            <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
+            <span className="line-clamp-1">{business.ciudad}</span>
           </div>
         </div>
       </div>

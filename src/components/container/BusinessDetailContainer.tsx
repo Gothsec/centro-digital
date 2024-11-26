@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Clock, MapPin, ArrowLeft } from 'lucide-react';
+import { Clock, MapPin, ArrowLeft, Home } from 'lucide-react';
 import { BusinessMap } from '../presentation/BusinessMap';
 import { ShareButtons } from '../presentation/ShareButtons';
 import { PhotoGallery } from '../presentation/PhotoGallery';
@@ -189,8 +189,12 @@ export const BusinessDetailContainer = () => {
                   <span>{business.horario}</span> {/* Mostrar el horario formateado */}
                 </div>
                 <div className="flex items-center text-gray-600">
-                  <MapPin className="h-5 w-5 mr-2" />
+                  <Home className="h-5 w-5 mr-2" />
                   <span>{business.direccion}</span>
+                </div>
+                <div className="flex items-center text-gray-600">
+                  <MapPin className="h-5 w-5 mr-2" />
+                  <span>{business.ciudad}</span>
                 </div>
               </div>
               
