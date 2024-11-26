@@ -149,11 +149,11 @@ export const BusinessDetailContainer = () => {
 
   const CategoryIcon = getCategoryIcon(business.categoria);
 
-  const imageUrl = `https://lweekzkloveifncmfsuq.supabase.co/storage/v1/object/public/images/business-${business.slug}.jpg`;
+  const imageUrl = `https://epriqvuqygtntgabedhf.supabase.co/storage/v1/object/public/images/business-${business.slug}.webp`;
 
-  const images = [`https://lweekzkloveifncmfsuq.supabase.co/storage/v1/object/public/images/business-${business.slug}-1.jpg`, `https://lweekzkloveifncmfsuq.supabase.co/storage/v1/object/public/images/business-${business.slug}-2.jpg`, `https://lweekzkloveifncmfsuq.supabase.co/storage/v1/object/public/images/business-${business.slug}-3.jpg`]
+  const images = [`https://epriqvuqygtntgabedhf.supabase.co/storage/v1/object/public/images/business-${business.slug}-1.webp`, `https://epriqvuqygtntgabedhf.supabase.co/storage/v1/object/public/images/business-${business.slug}-2.webp`, `https://epriqvuqygtntgabedhf.supabase.co/storage/v1/object/public/images/business-${business.slug}-3.webp`]
 
-  const defaultImages = ['../../../public/default-image.png', '../../../public/default-image.png', '../../../public/default-image.png']
+  const defaultImages = ['../../../public/default-image.webp', '../../../public/default-image.webp', '../../../public/default-image.webp']
 
   return (
     <div className="min-h-screen bg-gray-50">

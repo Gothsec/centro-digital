@@ -7,15 +7,11 @@ export interface Business {
   direccion: string;
   descripcion: string;
   categoria: string;
-  ubicacion: {
-    lat: number;
-    lng: number;
-  };
-  redes: {
-    whatsapp?: string;
-    facebook?: string;
-    instagram?: string;
-  };
+  lat: number;
+  lng: number;
+  whatsapp?: string;
+  facebook?: string;
+  instagram?: string;
   photos: string[];
   activo: boolean
 }

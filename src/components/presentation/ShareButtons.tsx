@@ -4,11 +4,10 @@ interface ShareButtonsProps {
   business: {
     nombre: string;
     direccion: string;
-    redes: {
-      whatsapp?: string;
-      facebook?: string;
-      instagram?: string;
-    };
+    ciudad: string;    
+    whatsapp?: string;
+    facebook?: string;
+    instagram?: string;
   };
 }
 
@@ -16,7 +15,7 @@ export const ShareButtons = ({ business }: ShareButtonsProps) => {
   const shareUrl = window.location.href;
   const shareText = `Check out ${business.nombre}!`;
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-    `${business.nombre} ${business.direccion}`
+    `${business.ciudad} ${business.direccion}`
   )}`;
 
   const handleShare = async () => {
@@ -30,8 +29,19 @@ export const ShareButtons = ({ business }: ShareButtonsProps) => {
       } catch (error) {
         console.error('Error sharing:', error);
       }
+    } else {
+      console.log('Sharing not supported on this browser');
+      copyToClipboard(shareUrl);
+      alert('El enlace ha sido copiado al portapapeles.');
     }
   };
+  
+  const copyToClipboard = (text:any) => {
+    navigator.clipboard.writeText(text).catch((err) => {
+      console.error('Error copying to clipboard', err);
+    });
+  };
+  
 
   return (
     <div className="space-y-6">
@@ -39,9 +49,9 @@ export const ShareButtons = ({ business }: ShareButtonsProps) => {
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Social Media</h3>
         <div className="inline-flex flex-col gap-4">
-          {business.redes.whatsapp && (
+          {business.whatsapp && (
             <a
-              href={business.redes.whatsapp}
+              href={`https://wa.me/${business.whatsapp}?text=${encodeURIComponent("Hola, vengo de parte de Centro digital")}`}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-50 text-green-600 hover:bg-green-100 transition-colors"
@@ -50,9 +60,9 @@ export const ShareButtons = ({ business }: ShareButtonsProps) => {
               <span className="text-sm font-medium">WhatsApp</span>
             </a>
           )}
-          {business.redes.facebook && (
+          {business.facebook && (
             <a
-              href={business.redes.facebook}
+              href={business.facebook}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors"
@@ -61,9 +71,9 @@ export const ShareButtons = ({ business }: ShareButtonsProps) => {
               <span className="text-sm font-medium">Facebook</span>
             </a>
           )}
-          {business.redes.instagram && (
+          {business.instagram && (
             <a
-              href={business.redes.instagram}
+              href={business.instagram}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 px-4 py-2 rounded-lg bg-pink-50 text-pink-600 hover:bg-pink-100 transition-colors"

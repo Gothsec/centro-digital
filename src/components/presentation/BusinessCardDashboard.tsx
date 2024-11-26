@@ -10,7 +10,7 @@ interface BusinessCardProps {
 }
 
 export const BusinessCard: React.FC<BusinessCardProps> = ({ business, viewMode, onEdit, onDelete }) => {
-  const imageUrl = `https://lweekzkloveifncmfsuq.supabase.co/storage/v1/object/public/images/business-${business.slug}.jpg`;
+  const imageUrl = `https://epriqvuqygtntgabedhf.supabase.co/storage/v1/object/public/images/business-${business.slug}.jpg`;
   const statusClass = business.activo ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600';
   const statusText = business.activo ? 'Activo' : 'Inactivo';
 

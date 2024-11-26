@@ -31,7 +31,7 @@ const BusinessImage = ({ business, imageUrl }: BusinessImageProps) => {
   }, [imageUrl]);
 
   // Imagen predeterminada (debería estar en la carpeta public)
-  const defaultImage = '/default-image.png';  // Ruta absoluta
+  const defaultImage = '/default-image.webp';  // Ruta absoluta
 
   return (
     <img

@@ -14,7 +14,7 @@ export const BusinessCard = ({ business, onFavorite, isFavorite }: BusinessCardP
   // Obtén el icono de la categoría utilizando la función getCategoryIcon
   const CategoryIcon = getCategoryIcon(business.categoria);
 
-  const imageUrl = `https://lweekzkloveifncmfsuq.supabase.co/storage/v1/object/public/images/business-${business.slug}.jpg`;
+  const imageUrl = `https://epriqvuqygtntgabedhf.supabase.co/storage/v1/object/public/images/business-${business.slug}.jpg`;
 
   return (
     <div className="group relative bg-white rounded-xl shadow-sm hover:shadow-md transition-all overflow-hidden">

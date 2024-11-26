@@ -38,9 +38,9 @@ const fetchImage = (url: string) => {
 };
 
 const CAROUSEL_IMAGES = [
-  { id: 1, url: "https://lweekzkloveifncmfsuq.supabase.co/storage/v1/object/public/images/profile-1.jpg", alt: "Shop 1" },
-  { id: 2, url: "https://lweekzkloveifncmfsuq.supabase.co/storage/v1/object/public/images/profile-2.jpg", alt: "Shop 2" },
-  { id: 3, url: "https://lweekzkloveifncmfsuq.supabase.co/storage/v1/object/public/images/profile-3.jpg", alt: "Shop 3" },
+  { id: 1, url: "https://epriqvuqygtntgabedhf.supabase.co/storage/v1/object/public/images/profile-1.webp", alt: "Shop 1" },
+  { id: 2, url: "https://epriqvuqygtntgabedhf.supabase.co/storage/v1/object/public/images/profile-2.webp", alt: "Shop 2" },
+  { id: 3, url: "https://epriqvuqygtntgabedhf.supabase.co/storage/v1/object/public/images/profile-3.webp", alt: "Shop 3" },
 ];
 
 export const BusinessListingContainer = () => {
