@@ -4,7 +4,7 @@ const Error404: React.FC = () => {
       <div className="text-center space-y-6">
         {/* Animación de la ilustración */}
         <div className="animate-pulse flex justify-center">
-          <div className="bg-indigo-600 text-white p-4 rounded-full">
+          <div className="bg-blue-600 text-white p-4 rounded-full">
             <span className="text-4xl font-bold">404</span>
           </div>
         </div>
@@ -23,7 +23,7 @@ const Error404: React.FC = () => {
         <div className="mt-8">
           <a
             href="/"
-            className="inline-block bg-indigo-600 text-white py-2 px-6 rounded-full text-lg font-medium transform transition-all duration-300 hover:scale-105 hover:bg-indigo-700"
+            className="inline-block bg-blue-600 text-white py-2 px-6 rounded-full text-lg font-medium transform transition-all duration-300 hover:scale-105 hover:bg-blue-700"
           >
             Volver al inicio
           </a>

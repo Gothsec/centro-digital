@@ -1,15 +1,15 @@
-import { useState, useMemo, useCallback, useEffect } from 'react';
-import { motion } from 'framer-motion'; // Importar framer-motion
-import { ImageCarousel } from '../presentation/ImageCarousel';
-import { CategoryCarousel } from '../presentation/CategoryCarousel';
-import { BusinessCard } from '../presentation/BusinessCardHome';
-import { Footer } from '../presentation/Footer';
-import { categories } from '../../utils/categories';
-import { useFavorites } from '../../hooks/useFavorites';
-import { getCategoryIcon } from '../../utils/categories';
-import { useBusinesses } from '../../hooks/useBusinesses'; 
-import { Heart } from 'lucide-react';
-import { SearchBar } from '../presentation/SearchBar';
+import { useState, useMemo, useCallback, useEffect } from "react";
+import { motion } from "framer-motion"; // Importar framer-motion
+import { ImageCarousel } from "../presentation/ImageCarousel";
+import { CategoryCarousel } from "../presentation/CategoryCarousel";
+import { BusinessCard } from "../presentation/BusinessCardHome";
+import { Footer } from "../presentation/Footer";
+import { categories } from "../../utils/categories";
+import { useFavorites } from "../../hooks/useFavorites";
+import { useBusinesses } from "../../hooks/useBusinesses";
+import { Heart } from "lucide-react";
+import { SearchBar } from "../presentation/SearchBar";
+import { Link } from "react-router-dom";
 
 // Caché de imágenes
 const imageCache = new Map();
@@ -38,13 +38,25 @@ const fetchImage = (url: string) => {
 };
 
 const CAROUSEL_IMAGES = [
-  { id: 1, url: "https://epriqvuqygtntgabedhf.supabase.co/storage/v1/object/public/images/profile-1.webp", alt: "Shop 1" },
-  { id: 2, url: "https://epriqvuqygtntgabedhf.supabase.co/storage/v1/object/public/images/profile-2.webp", alt: "Shop 2" },
-  { id: 3, url: "https://epriqvuqygtntgabedhf.supabase.co/storage/v1/object/public/images/profile-3.webp", alt: "Shop 3" },
+  {
+    id: 1,
+    url: "https://epriqvuqygtntgabedhf.supabase.co/storage/v1/object/public/images/profile-1.webp",
+    alt: "Promotion 1",
+  },
+  {
+    id: 2,
+    url: "https://epriqvuqygtntgabedhf.supabase.co/storage/v1/object/public/images/profile-2.webp",
+    alt: "Promotion 2",
+  },
+  {
+    id: 3,
+    url: "https://epriqvuqygtntgabedhf.supabase.co/storage/v1/object/public/images/profile-3.webp",
+    alt: "Promotion 3",
+  },
 ];
 
 export const BusinessListingContainer = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showFavorites, setShowFavorites] = useState(false);
@@ -56,7 +68,9 @@ export const BusinessListingContainer = () => {
   // Filtrar negocios de acuerdo al término de búsqueda y categoría seleccionada
   const filteredBusinesses = useMemo(() => {
     return businesses.filter((business) => {
-      const matchesSearch = business.nombre?.toLowerCase().includes(searchTerm.toLowerCase()) || false;
+      const matchesSearch =
+        business.nombre?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        false;
       const matchesCategory = selectedCategory
         ? business.categoria?.toLowerCase() === selectedCategory.toLowerCase()
         : true;
@@ -67,33 +81,45 @@ export const BusinessListingContainer = () => {
   // Solo mostrar los favoritos si "showFavorites" está activado
   const businessesToShow = useMemo(() => {
     return showFavorites
-      ? filteredBusinesses.filter(business => favorites.has(business.id))
+      ? filteredBusinesses.filter((business) => favorites.has(business.id))
       : filteredBusinesses;
   }, [filteredBusinesses, favorites, showFavorites]);
 
   // Paginar los negocios que se van a mostrar
-  const businessesToDisplay = useMemo(() => businessesToShow.slice(0, page * 8), [businessesToShow, page]);
+  const businessesToDisplay = useMemo(
+    () => businessesToShow.slice(0, page * 8),
+    [businessesToShow, page]
+  );
 
   // Pre-cargar las imágenes de los carruseles
   useEffect(() => {
-    const imageUrls = [...CAROUSEL_IMAGES.map(image => image.url), ...businesses.map(business => business.imageUrl).filter(Boolean)];
-    imageUrls.forEach(url => fetchImage(url).catch(error => console.error(error.message)));
+    const imageUrls = [
+      ...CAROUSEL_IMAGES.map((image) => image.url),
+      ...businesses.map((business) => business.imageUrl).filter(Boolean),
+    ];
+    imageUrls.forEach((url) =>
+      fetchImage(url).catch((error) => console.error(error.message))
+    );
   }, [businesses]);
 
   const handlePrevious = useCallback(() => {
-    setCurrentImageIndex(prev => (prev === 0 ? CAROUSEL_IMAGES.length - 1 : prev - 1));
+    setCurrentImageIndex((prev) =>
+      prev === 0 ? CAROUSEL_IMAGES.length - 1 : prev - 1
+    );
   }, []);
 
   const handleNext = useCallback(() => {
-    setCurrentImageIndex(prev => (prev === CAROUSEL_IMAGES.length - 1 ? 0 : prev + 1));
+    setCurrentImageIndex((prev) =>
+      prev === CAROUSEL_IMAGES.length - 1 ? 0 : prev + 1
+    );
   }, []);
 
   const handleToggleFavorites = useCallback(() => {
-    setShowFavorites(prev => !prev);
+    setShowFavorites((prev) => !prev);
   }, []);
 
   const handleLoadMore = useCallback(() => {
-    setPage(prev => prev + 1);
+    setPage((prev) => prev + 1);
   }, []);
 
   return (
@@ -114,22 +140,43 @@ export const BusinessListingContainer = () => {
         />
 
         <div className="mx-auto px-4">
-          <div className="bg-white rounded-lg shadow-md border p-6 max-w-2xl mx-auto">
-            <div className="flex gap-4 items-center">
+          <div className="bg-white rounded-lg shadow-md border p-6 max-w-3xl mx-auto">
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:gap-6">
+              {/* Barra de búsqueda */}
               <div className="relative flex-1">
                 <SearchBar value={searchTerm} onChange={setSearchTerm} />
               </div>
-              <button
-                onClick={handleToggleFavorites}
-                className="inline-flex items-center px-4 py-2 border rounded-md shadow-sm text-sm font-medium text-white bg-white/90 hover:bg-white hover:shadow-md transition-all"
-              >
-                <Heart
-                  className={`h-5 w-5 ${showFavorites ? 'fill-red-500 text-red-500' : 'text-gray-600'}`}
-                />
-                <span className={`ml-2 ${showFavorites ? 'text-red-500' : 'text-gray-500'}`}>
-                  {showFavorites ? 'Ver todos los negocios' : 'Ver solo favoritos'}
-                </span>
-              </button>
+
+              {/* Botones */}
+              <div className="flex flex-col items-center gap-4 md:flex-row md:gap-6">
+                <button
+                  onClick={handleToggleFavorites}
+                  className="inline-flex items-center px-4 py-2 border rounded-md shadow-sm text-sm font-medium bg-white hover:bg-gray-50 hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-gray-300"
+                >
+                  <Heart
+                    className={`h-5 w-5 ${
+                      showFavorites
+                        ? "fill-red-500 text-red-500"
+                        : "text-gray-600"
+                    }`}
+                  />
+                  <span
+                    className={`ml-2 ${
+                      showFavorites ? "text-red-500" : "text-gray-500"
+                    }`}
+                  >
+                    {showFavorites
+                      ? "Ver todos los negocios"
+                      : "Ver solo favoritos"}
+                  </span>
+                </button>
+
+                <Link to="/register-business">
+                  <span className="inline-block px-4 py-2 text-sm font-semibold bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    Registra tu negocio
+                  </span>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -158,7 +205,6 @@ export const BusinessListingContainer = () => {
               </div>
             ) : (
               businessesToDisplay.map((business) => {
-                const CategoryIcon = getCategoryIcon(business.categoria);
                 return (
                   <motion.div
                     key={business.id}
@@ -171,7 +217,6 @@ export const BusinessListingContainer = () => {
                       business={business}
                       onFavorite={() => toggleFavorite(business.id)}
                       isFavorite={favorites.has(business.id)}
-                      categoryIcon={CategoryIcon}
                     />
                   </motion.div>
                 );

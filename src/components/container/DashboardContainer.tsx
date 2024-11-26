@@ -8,7 +8,7 @@ import { BusinessModal } from '../presentation/BusinessModal';
 import { useBusinesses } from '../../hooks/useBusinesses';
 import { supabase } from '../../lib/supabase';
 import slugify from 'slugify';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/auth/authContext'; // Importamos el contexto de autenticación
 
 export const DashboardContainer = () => {
@@ -35,25 +35,38 @@ export const DashboardContainer = () => {
     navigate('/login'); // Redirigimos a la página de login
   };
 
-  // Memoized filtered businesses
+  // Filtros de negocios (actualizados)
   const filteredBusinesses = useMemo(() => {
+    if (!businesses || businesses.length === 0) return [];
+
+    const searchQuery = filters.search.trim().toLowerCase();
+    const categoryFilter = filters.category.toLowerCase();
+    const statusFilter = filters.status;
+
     return businesses.filter((business) => {
-      const matchesSearch = business.nombre
-        .toLowerCase()
-        .includes(filters.search.toLowerCase());
-      const matchesCategory =
-        filters.category === 'Todas las categorías' ||
-        business.categoria === filters.category;
+      const businessName = business.nombre?.toLowerCase() || '';
+      const businessCategory = business.categoria?.toLowerCase() || '';
+      const isActive = business.activo;
+
+      const matchesSearch = searchQuery === '' || businessName.includes(searchQuery);
+      const matchesCategory = categoryFilter === 'todas las categorías' || businessCategory === categoryFilter;
       const matchesStatus =
-        filters.status === 'all' ||
-        (filters.status === 'active' && business.activo) ||
-        (filters.status === 'inactive' && !business.activo);
+        statusFilter === 'all' ||
+        (statusFilter === 'active' && isActive) ||
+        (statusFilter === 'inactive' && !isActive);
 
       return matchesSearch && matchesCategory && matchesStatus;
     });
   }, [businesses, filters]);
 
-  // Memoized handlers
+  // Función para actualizar filtros
+  const updateFilter = (filterName: string, value: string) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [filterName]: value,
+    }));
+  };
+
   const handleDeleteBusiness = useCallback(async () => {
     if (businessToDelete) {
       try {
@@ -77,7 +90,7 @@ export const DashboardContainer = () => {
     if (!businessToEdit) return;
 
     try {
-      const slug = updatedBusiness.nombre 
+      const slug = updatedBusiness.nombre
         ? slugify(updatedBusiness.nombre.toLowerCase())
         : businessToEdit.slug;
 
@@ -194,9 +207,6 @@ export const DashboardContainer = () => {
       <header className="border-b bg-white px-6 py-4">
         <div className="flex items-center justify-between">
           <div className='flex gap-1 items-center'>
-            <Link to='/'>
-              <img className='size-7' src="../../../public/favicon.svg" alt="Logo de centro digital" />
-            </Link>
             <h1 className="text-2xl font-bold">Dashboard</h1>
           </div>
           {/* Botón de cerrar sesión */}
@@ -230,7 +240,7 @@ export const DashboardContainer = () => {
           </div>
         </div>
 
-        <BusinessFilterBar filters={filters} setFilters={setFilters} />
+        <BusinessFilterBar filters={filters} onFilterChange={updateFilter} />
 
         <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 gap-6' : ''}>
           {filteredBusinesses.map((business) => (

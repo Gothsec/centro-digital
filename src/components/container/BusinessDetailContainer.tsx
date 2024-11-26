@@ -186,7 +186,7 @@ export const BusinessDetailContainer = () => {
                 </div>
                 <div className="flex items-center text-gray-600">
                   <Clock className="h-5 w-5 mr-2" />
-                  <span>{business.horario}</span> {/* Mostrar el horario formateado */}
+                  <span>{business.horario}</span>
                 </div>
                 <div className="flex items-center text-gray-600">
                   <Home className="h-5 w-5 mr-2" />

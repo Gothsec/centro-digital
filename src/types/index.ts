@@ -1,4 +1,6 @@
 export interface Business {
+  ciudad: string;
+  departamento: string;
   slug: any;
   id: string;
   nombre: string;

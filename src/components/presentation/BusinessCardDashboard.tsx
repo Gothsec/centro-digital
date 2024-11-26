@@ -1,4 +1,4 @@
-import { MapPin, Clock, Pencil, Trash2 } from 'lucide-react';
+import { MapPin, Clock, Pencil, Trash2, Home } from 'lucide-react';
 import { Business } from '../../types';
 import BusinessImage from '../../data/images';
 
@@ -28,8 +28,12 @@ export const BusinessCard: React.FC<BusinessCardProps> = ({ business, viewMode, 
           <p className="text-sm text-gray-500">{business.categoria}</p>
           <div className="mt-4 space-y-2">
             <div className="flex items-center text-sm text-gray-600">
-              <MapPin className="w-4 h-4 mr-2" />
+              <Home className="w-4 h-4 mr-2" />
               <span>{business.direccion}</span>
+            </div>
+            <div className="flex items-center text-sm text-gray-600">
+              <MapPin className="w-4 h-4 mr-2" />
+              <span>{business.ciudad}</span>
             </div>
             <div className="flex items-center text-sm text-gray-600">
               <Clock className="w-4 h-4 mr-2" />
@@ -67,7 +71,8 @@ export const BusinessCard: React.FC<BusinessCardProps> = ({ business, viewMode, 
           <h3 className="text-xl font-semibold text-gray-800">{business.nombre}</h3>
           <p className="text-sm text-gray-500">{business.categoria}</p>
           <div className="mt-2 text-sm text-gray-600">{business.direccion}</div>
-          <div className="mt-1 text-sm text-gray-600">{business.horario}</div>
+          <div className="mt-1 text-sm text-gray-600">{business.ciudad}</div>
+          <div className="mt-2 text-sm text-gray-600">{business.horario}</div>
           <div className={`mt-4 text-sm font-semibold px-3 py-1 inline-block rounded-full ${statusClass}`}>
             {statusText}
           </div>

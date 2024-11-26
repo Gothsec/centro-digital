@@ -16,28 +16,28 @@ export const TermsContainer = () => {
             >
               <ArrowLeft className="h-6 w-6" />
             </button>
-            <h1 className="text-3xl font-bold">Terms & Conditions</h1>
+            <h1 className="text-3xl font-bold">Términos y Condiciones</h1>
           </div>
 
           <div className="bg-white rounded-xl shadow-sm p-6 space-y-6">
             <section>
-              <h2 className="text-xl font-semibold mb-4">1. Acceptance of Terms</h2>
+              <h2 className="text-xl font-semibold mb-4">1. Aceptación de los términos</h2>
               <p className="text-gray-600">
-                By accessing and using this website, you accept and agree to be bound by the terms and provision of this agreement.
+                Al acceder y utilizar este sitio web, aceptas y te comprometes a cumplir con los términos y disposiciones de este acuerdo.
               </p>
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold mb-4">2. Use License</h2>
+              <h2 className="text-xl font-semibold mb-4">2. Licencia de uso</h2>
               <p className="text-gray-600">
-                Permission is granted to temporarily download one copy of the materials (information or software) on Business Directory's website for personal, non-commercial transitory viewing only.
+                Se otorga permiso para descargar temporalmente una copia de los materiales (información o software) en el sitio web de <em>Centro Digital</em> solo para visualización transitoria y personal, no comercial.
               </p>
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold mb-4">3. Disclaimer</h2>
+              <h2 className="text-xl font-semibold mb-4">3. Exención de responsabilidad</h2>
               <p className="text-gray-600">
-                The materials on Business Directory's website are provided on an 'as is' basis. Business Directory makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.
+                Los materiales en el sitio web de <em>Centro Digital</em> se proporcionan "tal cual". <em>Centro Digital</em> no ofrece garantías, expresas o implícitas, y por la presente rechaza y anula todas las demás garantías, incluyendo, sin limitación, las garantías implícitas o condiciones de comerciabilidad, adecuación para un propósito particular, o no infracción de propiedad intelectual u otra violación de derechos.
               </p>
             </section>
           </div>
