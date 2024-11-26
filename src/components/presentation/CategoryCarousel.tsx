@@ -1,6 +1,5 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Category } from '../../types';
-import { getCategoryIcon } from '../../utils/categories';
 import { useRef } from 'react';
 
 interface CategoryCarouselProps {
@@ -51,7 +50,6 @@ export const CategoryCarousel = ({
         </button>
 
         {categories.map((category) => {
-          const Icon = getCategoryIcon(category.icon);
           return (
             <button
               key={category.id}
@@ -59,8 +57,7 @@ export const CategoryCarousel = ({
               aria-selected={selectedCategory === category.slug}
               className={getCategoryButtonClass(category.slug)}
             >
-              <Icon className="h-4 w-4" />
-              <span>{category.name}</span>
+              {category.name}
             </button>
           );
         })}
