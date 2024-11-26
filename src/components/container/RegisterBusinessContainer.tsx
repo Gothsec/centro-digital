@@ -31,11 +31,11 @@ export const RegisterBusinessContainer = () => {
 
   // Función para obtener las coordenadas de la dirección ingresada
   const obtenerCoordenadas = async () => {
-    const { direccion, ciudad, departamento } = formData;
+    const { direccion, ciudad } = formData;
 
-    if (!direccion || !ciudad || !departamento) return;
+    if (!direccion || !ciudad) return;
 
-    const direccionCompleta = `${direccion}, ${ciudad}, ${departamento}`;
+    const direccionCompleta = `${ciudad}, ${direccion}`;
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccionCompleta)}`;
 
     try {
@@ -70,7 +70,7 @@ export const RegisterBusinessContainer = () => {
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
       // Validar que el archivo es una imagen
-      const validTypes = ['image/jpg', 'image/jpeg'];
+      const validTypes = ['image/webp', 'image/webp'];
       if (validTypes.includes(file.type)) {
         if (index !== undefined) {
           // Si es una imagen de producto, almacenamos en el índice correspondiente
@@ -84,7 +84,7 @@ export const RegisterBusinessContainer = () => {
           setFormData((prev) => ({ ...prev, image: file }));
         }
       } else {
-        setError('Please upload a valid image (JPG or JPEG).');
+        setError('Please upload a valid image (Webp).');
       }
     }
   };
@@ -156,11 +156,11 @@ export const RegisterBusinessContainer = () => {
 
       let imageUrl = ''; // URL de la imagen principal
       if (formData.image) {
-        const fileName = `business-${formData.slug}.jpg`;
+        const fileName = `business-${formData.slug}.webp`;
         const { data, error: uploadError } = await supabase
           .storage
           .from('images')
-          .upload(fileName, formData.image, { contentType: 'image/jpg' });
+          .upload(fileName, formData.image, { contentType: 'image/webp' });
 
         if (uploadError) {
           throw new Error(uploadError.message || 'Image upload failed');
@@ -175,11 +175,11 @@ export const RegisterBusinessContainer = () => {
       for (let i = 0; i < formData.productImages.length; i++) {
         const productImage = formData.productImages[i];
         if (productImage) {
-          const productFileName = `business-${formData.slug}-${i + 1}.jpg`;
+          const productFileName = `business-${formData.slug}-${i + 1}.webp`;
           const { data: productData, error: productUploadError } = await supabase
             .storage
             .from('images')
-            .upload(productFileName, productImage, { contentType: 'image/jpg' });
+            .upload(productFileName, productImage, { contentType: 'image/webp' });
 
           if (productUploadError) {
             throw new Error(productUploadError.message || `Product image ${i + 1} upload failed`);

@@ -38,9 +38,9 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validar tipo de archivo (solo jpg)
-    if (!file.type.includes('image/jpeg')) {
-      setImageError('Only .jpg images are allowed.');
+    // Validar tipo de archivo (solo webp)
+    if (!file.type.includes('image/webp')) {
+      setImageError('Only .webp images are allowed.');
       return;
     }
 
@@ -239,7 +239,7 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
 
         {/* Image Upload */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Upload Business Image</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Upload Business Image: webp</label>
           <input
             type="file"
             name="image"
@@ -265,7 +265,7 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
         {[...Array(3)].map((_, index) => (
           <div key={index}>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Upload Product Image {index + 1}
+              Upload Product Image {index + 1}: webp
             </label>
             <input
               type="file"
