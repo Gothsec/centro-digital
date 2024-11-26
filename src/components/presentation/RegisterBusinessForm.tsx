@@ -40,13 +40,13 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
 
     // Validar tipo de archivo (solo webp)
     if (!file.type.includes('image/webp')) {
-      setImageError('Only .webp images are allowed.');
+      setImageError('Solo se aceptan imagenes .webp');
       return;
     }
 
     // Validar tamaño (máximo 2MB)
     if (file.size > 2 * 1024 * 1024) {
-      setImageError('The image size must not exceed 2MB.');
+      setImageError('El tamaño de la imagen no puede exceder 2MB.');
       return;
     }
 
@@ -66,7 +66,7 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
         <ArrowLeft className="w-5 h-5" /> Back
       </button>
 
-      <h1 className="text-2xl font-semibold text-gray-800 mb-4">Register Your Business</h1>
+      <h1 className="text-2xl font-semibold text-gray-800 mb-4">Registra tu negocio</h1>
 
       {error && (
         <p className="text-red-500 text-sm mb-4">{error}</p>
@@ -75,27 +75,27 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
       <form onSubmit={onSubmit} className="space-y-4">
         {/* Business Name */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Business Name</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Nombre del negocio</label>
           <input
             type="text"
             name="nombre"
             value={formData.nombre}
             onChange={onChange}
             className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter your business name"
+            placeholder="Ingresa el nombre de tu negocio"
             required
           />
         </div>
 
         {/* Description */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Descripcion</label>
           <textarea
             name="descripcion"
             value={formData.descripcion}
             onChange={onChange}
             className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Describe your business"
+            placeholder="Describe tu negocio"
             required
           ></textarea>
         </div>
@@ -109,7 +109,7 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
             value={formData.whatsapp}
             onChange={onChange}
             className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter WhatsApp number"
+            placeholder="Ingresa el numero de WhatsApp"
           />
         </div>
 
@@ -123,7 +123,7 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
               value={formData.facebook}
               onChange={onChange}
               className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Enter Facebook URL"
+              placeholder="Ingresa la url del Facebook"
             />
           </div>
           <div>
@@ -134,14 +134,14 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
               value={formData.instagram}
               onChange={onChange}
               className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Enter Instagram URL"
+              placeholder="Ingresa la url del Instagram"
             />
           </div>
         </div>
 
         {/* Category */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
           <select
             name="categoria"
             value={formData.categoria}
@@ -149,7 +149,7 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
             className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
             required
           >
-            <option value="" disabled>Select a Category</option>
+            <option value="" disabled>Selecciona una categoria</option>
             {categories.map((category) => (
               <option key={category.id} value={category.slug}>{category.name}</option>
             ))}
@@ -159,7 +159,7 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
         {/* Time Fields */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Opening Time</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Hora de apertura</label>
             <input
               type="time"
               name="hora_a"
@@ -170,7 +170,7 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Closing Time</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Hora de cierre</label>
             <input
               type="time"
               name="hora_c"
@@ -186,7 +186,7 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
         <div className="grid grid-cols-2 gap-4">
             {/* Department */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Departamento</label>
               <select
                 name="departamento"
                 value={formData.departamento}
@@ -194,7 +194,7 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
                 className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
                 required
               >
-                <option value="" disabled>Select a Department</option>
+                <option value="" disabled>Selecciona el departamento</option>
                 {Object.keys(departamentos).map((dep) => (
                   <option key={dep} value={dep}>
                     {dep}
@@ -205,7 +205,7 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
 
             {/* City */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Ciudad</label>
               <select
                 name="ciudad"
                 value={formData.ciudad}
@@ -213,7 +213,7 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
                 className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
                 required
               >
-                <option value="" disabled>Select a City</option>
+                <option value="" disabled>Selecciona la ciudad</option>
                 {ciudadesFiltradas.map((city, index) => (
                   <option key={index} value={city}>
                     {city}
@@ -225,21 +225,21 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
 
         {/* Address */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Dirección</label>
           <input
             type="text"
             name="direccion"
             value={formData.direccion}
             onChange={onChange}
             className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter address"
+            placeholder="Ingresa la dirección"
             required
           />
         </div>
 
         {/* Image Upload */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Upload Business Image: webp</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Imagen de perfil: webp</label>
           <input
             type="file"
             name="image"
@@ -254,7 +254,7 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
             <div className="mt-2">
               <img
                 src={URL.createObjectURL(formData.image)}
-                alt="Business preview"
+                alt="Vista previa de la imagen"
                 className="w-40 h-40 object-cover rounded"
               />
             </div>
@@ -265,7 +265,7 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
         {[...Array(3)].map((_, index) => (
           <div key={index}>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Upload Product Image {index + 1}: webp
+              Imagen producto {index + 1}: webp
             </label>
             <input
               type="file"
@@ -277,7 +277,7 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
               <div className="mt-2">
                 <img
                   src={URL.createObjectURL(formData.productImages[index])}
-                  alt={`Product preview ${index + 1}`}
+                  alt={`Vista previa del producto ${index + 1}`}
                   className="w-40 h-40 object-cover rounded"
                 />
               </div>
@@ -291,7 +291,7 @@ export const RegisterBusinessForm: React.FC<RegisterBusinessFormProps> = ({
           className={`w-full p-2 rounded text-white ${isSubmitDisabled ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
           disabled={isSubmitDisabled}
         >
-          {isSubmitting ? 'Submitting...' : 'Register'}
+          {isSubmitting ? 'Registrando...' : 'Registrar'}
         </button>
       </form>
     </div>

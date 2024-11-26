@@ -65,16 +65,17 @@ export const BusinessListingContainer = () => {
 
   const { businesses, isLoading, error } = useBusinesses();
 
-  // Filtrar negocios de acuerdo al término de búsqueda y categoría seleccionada
+  // Filtrar negocios de acuerdo al término de búsqueda, categoría seleccionada y que estén activos
   const filteredBusinesses = useMemo(() => {
     return businesses.filter((business) => {
       const matchesSearch =
-        business.nombre?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        false;
+        business.nombre?.toLowerCase().includes(searchTerm.toLowerCase()) || false;
       const matchesCategory = selectedCategory
         ? business.categoria?.toLowerCase() === selectedCategory.toLowerCase()
         : true;
-      return matchesSearch && matchesCategory;
+      const isActive = business.activo === true;  // Verifica que el negocio esté activo
+
+      return matchesSearch && matchesCategory && isActive;
     });
   }, [businesses, searchTerm, selectedCategory]);
 
