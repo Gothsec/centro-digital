@@ -84,7 +84,7 @@ export const RegisterBusinessContainer = () => {
           setFormData((prev) => ({ ...prev, image: file }));
         }
       } else {
-        setError('Please upload a valid image (Webp).');
+        setError('Por favor, sube una imagen válida (Webp).');
       }
     }
   };
@@ -96,56 +96,56 @@ export const RegisterBusinessContainer = () => {
 
     // Validaciones antes de enviar los datos
     if (!formData.nombre.trim()) {
-      setError('Business name is required.');
+      setError('El nombre del negocio es obligatorio.');
       setIsSubmitting(false);
       return;
     }
 
     if (!formData.descripcion.trim()) {
-      setError('Description is required.');
+      setError('La descripción es obligatoria.');
       setIsSubmitting(false);
       return;
     }
 
     if (!formData.categoria) {
-      setError('Category is required.');
+      setError('La categoría es obligatoria.');
       setIsSubmitting(false);
       return;
     }
 
     if (!formData.departamento) {
-      setError('Department is required.');
+      setError('El departamento es obligatorio.');
       setIsSubmitting(false);
       return;
     }
 
     if (!formData.ciudad) {
-      setError('City is required.');
+      setError('La ciudad es obligatoria.');
       setIsSubmitting(false);
       return;
     }
 
     if (!formData.hora_a || !formData.hora_c) {
-      setError('Both opening and closing times are required.');
+      setError('Se requieren las horas de apertura y cierre.');
       setIsSubmitting(false);
       return;
     }
 
     if (formData.hora_a >= formData.hora_c) {
-      setError('Opening time must be before closing time.');
+      setError('La hora de apertura debe ser antes de la hora de cierre.');
       setIsSubmitting(false);
       return;
     }
 
     if (!formData.image) {
-      setError('Main business image is required.');
+      setError('La imagen principal del negocio es obligatoria.');
       setIsSubmitting(false);
       return;
     }
 
     try {
       if (!supabase) {
-        throw new Error('Database connection not available');
+        throw new Error('Conexión a la base de datos no disponible');
       }
 
       // Obtener coordenadas
@@ -163,7 +163,7 @@ export const RegisterBusinessContainer = () => {
           .upload(fileName, formData.image, { contentType: 'image/webp' });
 
         if (uploadError) {
-          throw new Error(uploadError.message || 'Image upload failed');
+          throw new Error(uploadError.message || 'Error al subir la imagen');
         }
 
         const { data: publicUrlData } = supabase.storage.from('images').getPublicUrl(fileName);
@@ -182,7 +182,7 @@ export const RegisterBusinessContainer = () => {
             .upload(productFileName, productImage, { contentType: 'image/webp' });
 
           if (productUploadError) {
-            throw new Error(productUploadError.message || `Product image ${i + 1} upload failed`);
+            throw new Error(productUploadError.message || `Error al subir la imagen de producto ${i + 1}`);
           }
 
           const { data: productPublicUrlData } = supabase.storage.from('images').getPublicUrl(productFileName);
@@ -207,7 +207,7 @@ export const RegisterBusinessContainer = () => {
       const { error: supabaseError } = await supabase.from('negocios').insert([dataToInsert]);
 
       if (supabaseError) {
-        throw new Error(supabaseError.message || 'Error inserting data into negocios');
+        throw new Error(supabaseError.message || 'Error al insertar datos en la tabla de negocios');
       }
 
       // Si necesitas hacer algo con las URLs de las imágenes (por ejemplo, asociarlas con productos), hazlo aquí.
@@ -215,7 +215,7 @@ export const RegisterBusinessContainer = () => {
 
       navigate('/'); // Redirigir a la página principal o a otra sección
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      setError(err instanceof Error ? err.message : 'Ocurrió un error');
     } finally {
       setIsSubmitting(false);
     }
